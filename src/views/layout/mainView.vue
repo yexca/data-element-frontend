@@ -1,7 +1,7 @@
 <template>
   <div class="main-content">
     <!-- header -->
-    <div class="header" style="display: flex; justify-content:flex-end">
+    <div class="header" style="display: flex; justify-content:flex-end; background-color: #D7E9FD;">
       <div class="header-left">left</div>
       <el-header>
       <!-- 右侧内容 -->
@@ -18,7 +18,7 @@
     </el-header>
     </div>
 
-    <div class="content">
+    <div class="content" style="margin: 20px 20px 0 20px">
       <router-view></router-view>
     </div>
   </div>

@@ -14,7 +14,7 @@ const routes = [
     path: '/',
     name: 'layout',
     component: layoutView,
-    redirect: '/dashboard',
+    redirect: '/login',
     children:[
       {
         path: '/dashboard',
@@ -24,7 +24,7 @@ const routes = [
       // 员工管理
       {
         path: '/employee',
-        name: 'dashboard',
+        name: 'employee',
         component: () => import('../views/employee/employeeView.vue')
       },
       // 用户管理

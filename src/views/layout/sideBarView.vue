@@ -7,7 +7,7 @@
     :collapse="isCollapse"
     router
   >
-  <el-menu-item index="/">
+  <el-menu-item index="/dashboard">
       <i class="el-icon-menu"></i>
       <span slot="title">dashboard</span>
     </el-menu-item>
@@ -49,7 +49,7 @@ export default {
 
 <style>
 .el-menu-vertical-demo:not(.el-menu--collapse) {
-  width: 200px;
+  width: 250px;
   min-height: 400px;
 }
 </style>
