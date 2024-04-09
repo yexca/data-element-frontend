@@ -12,7 +12,7 @@ export function empLogin(loginData){
 // 查询员工信息列表
 export function listEmployee(query) {
   return request({
-    url: '/admin/employee/page',
+    url: '/admin/employee',
     method: 'get',
     params: query
   })
@@ -29,25 +29,25 @@ export function getEmployee(employeeId) {
 // 新增员工信息
 export function addEmployee(data) {
   return request({
-    url: '/admin/employee/add',
+    url: '/admin/employee',
     method: 'post',
     data: data
   })
 }
 
 // 修改员工信息
-export function updateEmployee(data) {
+export function updateEmployee(employeeId, data) {
   return request({
-    url: '/admin/employee/edit',
+    url: '/admin/employee/' + employeeId,
     method: 'put',
     data: data
   })
 }
 
 // 删除员工信息
-// export function delEmployee(employeeId) {
-//   return request({
-//     url: '/api/admin/employee/' + employeeId,
-//     method: 'delete'
-//   })
-// }
+export function delEmployee(employeeId) {
+  return request({
+    url: '/admin/employee/' + employeeId,
+    method: 'delete'
+  })
+}

@@ -13,9 +13,10 @@
           style="width: 200px"
         >
         </el-input>
+        <el-button style="margin-left: 10px;" @click="handleSearch">搜索</el-button>
       </div>
       <div class="content-header-button" style="margin-right: 10px">
-        <el-button>搜索</el-button>
+        <el-button @click="handleAdd">新增</el-button>
       </div>
     </div>
     <!-- 表格 -->
@@ -64,6 +65,13 @@
               @click="handleUpdate(scope.row)"
               >修改</el-button
             >
+            <el-button
+              type="text"
+              size="mini"
+              icon="el-icon-edit"
+              @click="handleDelete(scope.row)"
+              >删除</el-button
+            >
           </template>
         </el-table-column>
       </el-table>
@@ -83,16 +91,24 @@
     </div>
 
     <!-- 添加或修改员工信息对话框 -->
-    <el-dialog :title="title" :visible.sync="openDialog" width="500px" append-to-body>
+    <el-dialog
+      :title="dialogTitle"
+      :visible.sync="openDialog"
+      width="500px"
+      append-to-body
+    >
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
         <el-form-item label="用户名" prop="username">
           <el-input v-model="form.username" placeholder="请输入用户名" />
         </el-form-item>
         <el-form-item label="密码" prop="password">
-          <el-input v-model="form.password" placeholder="请输入密码，默认123456" />
+          <el-input
+            v-model="form.password"
+            placeholder="请输入密码，默认123456"
+          />
         </el-form-item>
         <el-form-item label="昵称" prop="nickname">
-          <el-input v-model="form.nickname" placeholder="请输入昵称" />
+          <el-input v-model="form.nickname" placeholder="请输入昵称，默认用户名" />
         </el-form-item>
         <el-form-item label="电子邮箱" prop="email">
           <el-input v-model="form.email" placeholder="请输入电子邮箱" />
@@ -110,11 +126,12 @@
         <!-- 国家选择 -->
         <el-form-item label="国家" prop="countryId">
           <el-select v-model="form.countryId" placeholder="请选择国家">
-            <el-option 
+            <el-option
               v-for="country in countries"
               :key="country.id"
-              :label="country.name" 
-              :value="country.countryId"></el-option>
+              :label="country.name"
+              :value="country.countryId"
+            ></el-option>
           </el-select>
         </el-form-item>
 
@@ -125,14 +142,14 @@
         <!-- 角色选择 -->
         <el-form-item label="角色" prop="roleId">
           <el-select v-model="form.roleId" placeholder="请选择角色">
-            <el-option 
+            <el-option
               v-for="role in roles"
               :key="role.id"
-              :label="role.name" 
-              :value="role.roleId"></el-option>
+              :label="role.name"
+              :value="role.roleId"
+            ></el-option>
           </el-select>
         </el-form-item>
-
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitForm">确 定</el-button>
@@ -143,7 +160,7 @@
 </template>
 
 <script>
-import { listEmployee, addEmployee, updateEmployee, getEmployee } from "@/api/employee";
+import { listEmployee, addEmployee, updateEmployee, getEmployee, delEmployee } from "@/api/employee";
 import { listRole } from '@/api/role'
 import { listCountry } from "@/api/country";
 export default {
@@ -175,6 +192,18 @@ export default {
       rules :{
         username: [
           {required: true, message: '请输入用户名', trigger: 'blur'} // 触发方式为失去焦点
+        ],
+        gender: [
+          {required: true, message: '请选择性别', trigger: 'change'}
+        ],
+        countryId: [
+          {required: true, message: '请选择国家', trigger: 'change'}
+        ],
+        nin: [
+          {required: true, message: '请输入身份证号', trigger: 'blur'}
+        ],
+        roleId: [
+          {required: true, message: '请选择角色', trigger: 'change'}
         ]
       }
     };
@@ -207,6 +236,10 @@ export default {
     },
     handleCurrentChange(val) {
       this.queryParams.page = val;
+      this.fetchList();
+    },
+    // 搜索
+    handleSearch(){
       this.fetchList();
     },
     // 表单重置
@@ -243,10 +276,27 @@ export default {
       const employeeId = row.employeeId;
       getEmployee(employeeId).then((res) => {
         this.form = res.data.data;
-        console.log(this.form)
+        // console.log(this.form)
         // 显示弹窗
-        this.openDialog = true;
         this.dialogTitle = "修改员工信息";
+        this.openDialog = true;
+      });
+    },
+    // 新增按钮操作
+    handleAdd(){
+      this.reset();
+      this.dialogTitle = "新增员工";
+      this.openDialog = true
+    },
+    // 删除按钮操作
+    handleDelete(row){
+      const employeeId = row.employeeId;
+      delEmployee(employeeId).then(() => {
+        // 成功提醒弹窗
+        this.$message({
+          message: '删除成功',
+          type: 'success'
+        });
       });
     },
     // 弹窗提交按钮
@@ -255,11 +305,11 @@ export default {
         if(valid){
           // 规则校验成功
           if (this.form.employeeId != null){
-        updateEmployee(this.form).then(() => {
-          // 成功提醒弹窗
-          this.$message({
-          message: '修改成功',
-          type: 'success'
+            updateEmployee(this.form.employeeId, this.form).then(() => {
+            // 成功提醒弹窗
+            this.$message({
+            message: '修改成功',
+            type: 'success'
           });
           // 关闭弹窗
           this.openDialog = false;

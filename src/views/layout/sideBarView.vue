@@ -22,8 +22,8 @@
         <i class="el-icon-location"></i>
         <span slot="title">用户管理</span>
       </template>
-      <el-menu-item index="/user">个人用户</el-menu-item>
-      <el-menu-item index="/user">企业用户</el-menu-item>
+      <el-menu-item index="/users/personal">个人用户</el-menu-item>
+      <el-menu-item index="/users/enterprise">企业用户</el-menu-item>
     </el-submenu>
 
   </el-menu>

@@ -31,7 +31,7 @@ const routes = [
       {
         path: '/user',
         name: 'user',
-        component: () => import('../views/userManage/userManageView.vue')
+        component: () => import('../views/userManage/personalUserManageView.vue')
       }
     ]
   }
