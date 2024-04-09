@@ -27,11 +27,17 @@ const routes = [
         name: 'employee',
         component: () => import('../views/employee/employeeView.vue')
       },
-      // 用户管理
+      // 个人用户管理
       {
-        path: '/user',
-        name: 'user',
+        path: '/users/personal',
+        name: 'personalUserManage',
         component: () => import('../views/userManage/personalUserManageView.vue')
+      },
+      // 企业用户管理
+      {
+        path: '/users/enterprise',
+        name: 'enterpriseUserManage',
+        component: () => import('../views/userManage/enterpriseUserManageView.vue')
       }
     ]
   }
