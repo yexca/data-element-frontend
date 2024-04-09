@@ -98,8 +98,11 @@
             v-model="form.password"
             type="password"
             show-password
-            placeholder="请输入密码，默认123456"
+            placeholder="请输入密码"
           />
+        </el-form-item>
+        <el-form-item label="确认密码" prop="checkPassword">
+          <el-input v-model="form.checkPassword" placeholder="请再次输入密码"></el-input>
         </el-form-item>
         <el-form-item label="昵称" prop="nickname">
           <el-input v-model="form.nickname" placeholder="请输入昵称，默认用户名" />
@@ -136,6 +139,7 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitForm">确 定</el-button>
+        <el-button type="info" @click="resetForm">重 置</el-button>
         <el-button @click="cancel">取 消</el-button>
       </div>
     </el-dialog>
@@ -147,6 +151,27 @@ import { listPersonalUser, getPersonalUser, addPersonalUser, updatePersonalUser,
 import { listCountry } from "@/api/country";
 export default {
   data() {
+    // 密码确认--开始
+    var validatePass = (rules, value, callback) => {
+        if (value === '') {
+          callback(new Error('请输入密码'));
+        } else {
+          if (this.form.checkPassword !== '') {
+            this.$refs.form.validateField('checkPassword');
+          }
+          callback();
+        }
+      };
+      var validatePass2 = (rules, value, callback) => {
+        if (value === '') {
+          callback(new Error('请再次输入密码'));
+        } else if (value !== this.form.password) {
+          callback(new Error('两次输入密码不一致!'));
+        } else {
+          callback();
+        }
+      };
+    // 密码确认--结束
     return {
       loading: true,
       queryParams: {
@@ -170,6 +195,12 @@ export default {
       rules :{
         username: [
           {required: true, message: '请输入用户名', trigger: 'blur'} // 触发方式为失去焦点
+        ],
+        password: [
+          { validator: validatePass, trigger: 'blur' }
+        ],
+        checkPassword: [
+          { validator: validatePass2, trigger: 'blur' }
         ],
         gender: [
           {required: true, message: '请选择性别', trigger: 'change'}
@@ -219,6 +250,7 @@ export default {
         userId: null,
         username: null,
         password: null,
+        checkPassword: null,
         nickname: null,
         email: null,
         phone: null,
@@ -231,6 +263,10 @@ export default {
     // 弹窗取消
     cancel() {
       this.openDialog = false;
+      this.reset();
+    },
+    // 弹窗内容重置
+    resetForm() {
       this.reset();
     },
     // 修改按钮操作
@@ -268,10 +304,6 @@ export default {
         if(valid){
           // 规则校验成功
           if (this.form.userId != null){
-            // 修改用户，检验密码是否为默认密码
-            if(this.form.password == "123456"){
-              this.form.password = null
-            }
             updatePersonalUser(this.form.userId, this.form).then(() => {
             // 成功提醒弹窗
             this.$message({
