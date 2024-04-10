@@ -38,6 +38,12 @@ const routes = [
         path: '/users/enterprise',
         name: 'enterpriseUserManage',
         component: () => import('../views/userManage/enterpriseUserManageView.vue')
+      },
+      // 测试
+      {
+        path: '/test',
+        name: 'test',
+        component: () => import('../views/test/testView.vue')
       }
     ]
   }

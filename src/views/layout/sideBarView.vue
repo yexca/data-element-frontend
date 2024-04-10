@@ -26,6 +26,11 @@
       <el-menu-item index="/users/enterprise">企业用户</el-menu-item>
     </el-submenu>
 
+    <el-menu-item index="/test">
+      <i class="el-icon-menu"></i>
+      <span slot="title">测试</span>
+    </el-menu-item>
+
   </el-menu>
 </template>
 

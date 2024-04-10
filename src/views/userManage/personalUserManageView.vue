@@ -111,7 +111,7 @@
           <el-input v-model="form.email" placeholder="请输入电子邮箱" />
         </el-form-item>
         <el-form-item label="电话号码" prop="phone">
-          <el-input v-model="form.phone" placeholder="请输入电话号码" />
+          <el-input v-model.number="form.phone" placeholder="请输入电话号码" />
         </el-form-item>
         <el-form-item label="性别" prop="gender">
           <el-radio-group v-model="form.gender">
@@ -194,13 +194,25 @@ export default {
       // 表单规则
       rules :{
         username: [
-          {required: true, message: '请输入用户名', trigger: 'blur'} // 触发方式为失去焦点
+          {required: true, message: '请输入用户名', trigger: 'blur'}, // 触发方式为失去焦点
+          {pattern: /^[A-Za-z0-9]+$/, message: '用户名只能使用字母和数字', trigger: 'blur'},
+          {min: 5, message: '用户名至少五个字符', trigger: 'blur'}
         ],
         password: [
-          { validator: validatePass, trigger: 'blur' }
+          { validator: validatePass, trigger: 'blur' },
+          {pattern: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/, message: '密码至少包含字母和数字且最低八位', trigger: 'blur'}
         ],
         checkPassword: [
           { validator: validatePass2, trigger: 'blur' }
+        ],
+        nickname: [
+          { pattern: /^[A-Za-z0-9\u4e00-\u9fa5]+$/, message: '仅允许数字、字母和汉字', trigger: 'blur'}
+        ],
+        email: [
+          {pattern: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/, message: '请输入正确的邮箱格式', trigger: 'blur'}
+        ],
+        phone: [
+          { pattern: /^\d{6,11}$/, message: '电话号码必须为数字且为 6-11 位数字', trigger: 'blur'}
         ],
         gender: [
           {required: true, message: '请选择性别', trigger: 'change'}
@@ -209,7 +221,8 @@ export default {
           {required: true, message: '请选择国家', trigger: 'change'}
         ],
         nin: [
-          {required: true, message: '请输入身份证号', trigger: 'blur'}
+          {required: true, message: '请输入身份证号', trigger: 'blur'},
+          {min: 6, message: '身份证号最短6个字符'}
         ]
       }
     };
