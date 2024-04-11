@@ -59,6 +59,9 @@ service.interceptors.response.use(
           break;
         case 405:
           error.message = '请求错误'
+          break;
+        case 500:
+          error.message = '服务器错误'
       }
     }
     //请求响应中的config的url会带上代理的api需要去掉

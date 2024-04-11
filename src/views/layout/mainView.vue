@@ -1,7 +1,7 @@
 <template>
-  <div class="main-content">
+  <div class="main-content" :style="{width: windowWidth + 'px'}">
     <!-- header -->
-    <div class="header" style="display: flex; justify-content:flex-end; background-color: #D7E9FD;">
+    <div class="header" style="display: flex; justify-content: space-between; background-color: #D7E9FD; ">
       <div class="header-left">left</div>
       <el-header>
       <!-- 右侧内容 -->
@@ -25,12 +25,27 @@
 </template>
 
 <script>
-export default {};
+export default {
+  data() {
+    return {
+      // 窗口宽度
+      windowWidth: null,
+    }
+  },
+  mounted(){
+    // 获取宽度
+    window.onresize = () => {
+      return (() => {
+        this.windowWidth = document.body.clientWidth - 200;
+      })()
+    }
+  }
+};
 </script>
 
 <style>
 .main-content {
-  width: 100%;
+  width: 85%;
   height: 100%;
 }
 </style>

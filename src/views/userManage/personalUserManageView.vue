@@ -1,16 +1,57 @@
 <template>
   <div class="app-container">
     <!-- header -->
-    <div class="content-header" style="display: flex; justify-content: space-between;">
-      <div class="content-header-search">
+    <!-- <div class="content-header" style="display: flex; "> -->
+      <div class="content-header-search" style="display: flex; align-items: center;">
         <span style="margin-left: 10px;">用户名：</span>
         <el-input v-model="queryParams.username" placeholder="请输入用户名" clearable style="width: 200px;"></el-input>
-        <el-button style="margin-left: 10px;" @click="handleSearch">搜索</el-button>
+        <span style="margin-left: 10px">手机号：</span>
+        <el-input placeholder="请输入手机号" v-model="queryParams.phone" clearable style="width: 200px"></el-input>
+        <span style="margin-left: 10px">身份证号：</span>
+        <el-input placeholder="请输入身份证号" v-model="queryParams.nin" clearable style="width: 200px"></el-input>
+        
+        <el-button circle style="margin-left: 5px;" @click="showAdditionalFields"><i v-show="showAdditionalFieldsFlag" class="el-icon-arrow-up"></i><i v-show="!showAdditionalFieldsFlag" class="el-icon-arrow-down"></i></el-button>
+        <el-button style="margin-left: 10px;" @click="handleSearch">搜索</el-button>  
       </div>
-      <div class="content-header-button" style="margin-right: 10px">
+      <!-- <div class="content-header-button" style="margin-right: 10px">
         <el-button @click="handleAdd">新增</el-button>
-      </div>
-    </div>
+      </div> -->
+    <!-- </div> -->
+
+    <!-- 额外的输入框，默认不显示 -->
+    <div v-show="showAdditionalFieldsFlag">
+    <div style="display: flex; align-items: center; margin-top: 10px;">
+      <span style="margin-left: 10px;">ID：</span>
+      <el-input v-model="queryParams.userId" placeholder="请输入ID" clearable style="width: 11%;"></el-input>
+      <span style="margin-left: 10px;">昵称：</span>
+      <el-input v-model="queryParams.nickname" placeholder="请输入昵称" clearable style="width: 11%;"></el-input>
+      <span style="margin-left: 10px;">邮箱：</span>
+      <el-input v-model="queryParams.email" placeholder="请输入邮箱" clearable style="width: 11%;"></el-input>
+      <span style="margin-left: 10px;">国家或地区：</span>
+      <!-- <el-input v-model="queryParams.countryId" placeholder="请输入国家" clearable style="width: 11%;"></el-input> -->
+      <el-select v-model="queryParams.countryId" placeholder="请选择国家或地区" style="width: 11%;">
+        <el-option
+          v-for="country in countries"
+          :key="country.id"
+          :label="country.name"
+          :value="country.countryId">
+        </el-option>
+      </el-select>
+      <span style="margin-left: 10px;">性别：</span>
+      <!-- <el-input v-model="queryParams.gender" placeholder="请输入性别" clearable style="width: 11%;"></el-input> -->
+      <el-select v-model="queryParams.gender" placeholder="请选择性别" style="width: 11%;">
+        <el-option label="男" value="1"></el-option>
+        <el-option label="女" value="2"></el-option>
+        <el-option label="未知" value="0"></el-option>
+      </el-select>
+      <span style="margin-left: 10px;">状态：</span>
+      <!-- <el-input v-model="queryParams.status" placeholder="请输入状态" clearable style="width: 11%;"></el-input> -->
+      <el-select v-model="queryParams.gender" placeholder="请选择状态" style="width: 11%;">
+        <el-option label="启用" value="0"></el-option>
+        <el-option label="禁用" value="1"></el-option>
+      </el-select>
+    </div></div>
+    <el-divider></el-divider>
 
     <!-- 表格 -->
     <div class="content-main">
@@ -19,25 +60,24 @@
         :data="tableData"
         v-loading="loading"
         stripe
-        style="min-height: 400px"
       >
-        <el-table-column prop="userId" label="ID" width="50">
+        <el-table-column prop="userId" label="ID" width="60" sortable fixed="left">
         </el-table-column>
-        <el-table-column prop="username" label="用户名" width="100">
+        <el-table-column prop="username" label="用户名" width="120" sortable>
         </el-table-column>
-        <el-table-column prop="nickname" label="昵称" width="100">
+        <el-table-column prop="nickname" label="昵称" width="100" sortable>
         </el-table-column>
-        <el-table-column prop="email" label="邮箱" width="200">
+        <el-table-column prop="gender" label="性别" width="50" align="center">
         </el-table-column>
-        <el-table-column prop="phone" label="手机号" width="100">
+        <el-table-column prop="countryName" label="国家或地区" width="100" align="center">
         </el-table-column>
-        <el-table-column prop="gender" label="性别" width="50">
+        <el-table-column prop="nin" label="身份证" width="170">
         </el-table-column>
-        <el-table-column prop="countryName" label="国家" width="100">
+        <el-table-column prop="email" label="邮箱" width="170">
         </el-table-column>
-        <el-table-column prop="nin" label="身份证" width="100">
+        <el-table-column prop="phone" label="手机号" width="120">
         </el-table-column>
-        <el-table-column prop="status" label="状态" width="100">
+        <el-table-column prop="status" label="状态" width="80" fixed="right" align="center">
           <template slot-scope="scope">
             <el-tag type="success" v-if="scope.row.status == '启用'"
               >启用</el-tag
@@ -47,19 +87,38 @@
             >
           </template>
         </el-table-column>
-        <el-table-column label="操作">
+        <el-table-column label="操作" width="260" fixed="right">
+          <template slot="header">
+            <el-button @click="handleAdd">新增</el-button>
+          </template>
           <template slot-scope="scope">
             <el-button
-              type="text"
+              v-show="scope.row.status == '启用'"
+              type="info"
+              size="mini"
+              icon="el-icon-circle-close"
+              @click="handleStatus(scope.row, 1)"
+              >禁用</el-button
+            >
+            <el-button
+              v-show="scope.row.status == '禁用'"
+              style="margin-left: 0;"
+              type="success"
+              size="mini"
+              icon="el-icon-circle-check"
+              @click="handleStatus(scope.row, 0)"
+              >启用</el-button
+            >
+            <el-button
               size="mini"
               icon="el-icon-edit"
               @click="handleUpdate(scope.row)"
               >修改</el-button
             >
             <el-button
-              type="text"
+              type="danger"
               size="mini"
-              icon="el-icon-edit"
+              icon="el-icon-delete"
               @click="handleDelete(scope.row)"
               >删除</el-button
             >
@@ -83,13 +142,13 @@
     </div>
 
     <!-- 添加或修改员工信息对话框 -->
-    <el-dialog
+    <el-drawer
       :title="dialogTitle"
       :visible.sync="openDialog"
       width="500px"
       append-to-body
     >
-      <el-form ref="form" :model="form" :rules="rules" label-width="80px">
+      <el-form ref="form" :model="form" :rules="rules" label-width="80px" class="drawer-form">
         <el-form-item label="用户名" prop="username">
           <el-input v-model="form.username" placeholder="请输入用户名" />
         </el-form-item>
@@ -110,8 +169,8 @@
         <el-form-item label="电子邮箱" prop="email">
           <el-input v-model="form.email" placeholder="请输入电子邮箱" />
         </el-form-item>
-        <el-form-item label="电话号码" prop="phone">
-          <el-input v-model.number="form.phone" placeholder="请输入电话号码" />
+        <el-form-item label="手机号" prop="phone">
+          <el-input v-model.number="form.phone" placeholder="请输入手机号" />
         </el-form-item>
         <el-form-item label="性别" prop="gender">
           <el-radio-group v-model="form.gender">
@@ -120,9 +179,9 @@
           </el-radio-group>
         </el-form-item>
 
-        <!-- 国家选择 -->
-        <el-form-item label="国家" prop="countryId">
-          <el-select v-model="form.countryId" placeholder="请选择国家">
+        <!-- 国家或地区选择 -->
+        <el-form-item label="国家或地区" prop="countryId">
+          <el-select v-model="form.countryId" placeholder="请选择国家或地区">
             <el-option
               v-for="country in countries"
               :key="country.id"
@@ -137,12 +196,12 @@
         </el-form-item>
 
       </el-form>
-      <div slot="footer" class="dialog-footer">
+      <div class="demo-drawer__footer" style="display: flex; justify-content: space-around;">
         <el-button type="primary" @click="submitForm">确 定</el-button>
         <el-button type="info" @click="resetForm">重 置</el-button>
         <el-button @click="cancel">取 消</el-button>
       </div>
-    </el-dialog>
+    </el-drawer>
   </div>
 </template>
 
@@ -177,8 +236,18 @@ export default {
       queryParams: {
         page: 1,
         pageSize: 5,
-        username: null
+        userId: null,
+        username: null,
+        nickname: null,
+        email: null,
+        phone: null,
+        gender: null,
+        countryId: null,
+        nin: null,
+        status: null
       },
+      // 额外搜索框
+      showAdditionalFieldsFlag: false,
       tableData: [],
       total: null,
       // 是否显示弹窗
@@ -187,9 +256,9 @@ export default {
       dialogTitle: "",
       // 弹窗表单参数
       form: {},
-      // 国家信息表
+      // 国家或地区信息表
       countries: [],
-      // 用于选中的国家ID
+      // 用于选中的国家或地区ID
       selectedCountryId: null,
       // 表单规则
       rules :{
@@ -212,13 +281,13 @@ export default {
           {pattern: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/, message: '请输入正确的邮箱格式', trigger: 'blur'}
         ],
         phone: [
-          { pattern: /^\d{6,11}$/, message: '电话号码必须为数字且为 6-11 位数字', trigger: 'blur'}
+          { pattern: /^\d{6,11}$/, message: '手机号必须为数字且为 6-11 位数字', trigger: 'blur'}
         ],
         gender: [
           {required: true, message: '请选择性别', trigger: 'change'}
         ],
         countryId: [
-          {required: true, message: '请选择国家', trigger: 'change'}
+          {required: true, message: '请选择国家或地区', trigger: 'change'}
         ],
         nin: [
           {required: true, message: '请输入身份证号', trigger: 'blur'},
@@ -229,9 +298,10 @@ export default {
   },
   created(){
     this.fetchList();
+    this.tableWidth = document.body.clientWidth - 250;
   },
   mounted(){
-    // 获取国家信息
+    // 获取国家或地区信息
     listCountry().then(res => {
       this.countries = res.data.data;
     })
@@ -244,6 +314,10 @@ export default {
         this.total = res.data.data.total;
         this.loading = false;
       });
+    },
+    // 展示更多搜索框
+    showAdditionalFields() {
+      this.showAdditionalFieldsFlag = !this.showAdditionalFieldsFlag;
     },
     handleSizeChange(val) {
       this.queryParams.pageSize = val;
@@ -346,11 +420,29 @@ export default {
         });
         }
       })
+    },
+    // 状态禁用或启用
+    handleStatus(row, status){
+      this.reset();
+      this.form.status = status;
+      updatePersonalUser(row.userId, this.form).then(() => {
+        // 成功提醒弹窗
+        this.$message({
+            message: '修改成功',
+            type: 'success'
+          });
+        // 重新获取列表
+        this.fetchList();
+      });
+      
     }
   },
 }
 </script>
 
 <style>
-
+.drawer-form {
+  padding-left: 20px;
+  padding-right: 20px;
+}
 </style>

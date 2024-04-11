@@ -26,6 +26,15 @@
       <el-menu-item index="/users/enterprise">企业用户</el-menu-item>
     </el-submenu>
 
+    <el-submenu index="/data">
+        <template slot="title">
+        <i class="el-icon-location"></i>
+        <span slot="title">数据管理</span>
+      </template>
+      <el-menu-item index="/data/personal">个人数据</el-menu-item>
+      <el-menu-item index="/data/enterprise">企业数据</el-menu-item>
+    </el-submenu>
+
     <el-menu-item index="/test">
       <i class="el-icon-menu"></i>
       <span slot="title">测试</span>
@@ -54,7 +63,7 @@ export default {
 
 <style>
 .el-menu-vertical-demo:not(.el-menu--collapse) {
-  width: 250px;
+  width: 200px;
   min-height: 400px;
 }
 </style>

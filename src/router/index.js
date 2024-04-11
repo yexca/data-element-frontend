@@ -39,6 +39,18 @@ const routes = [
         name: 'enterpriseUserManage',
         component: () => import('../views/userManage/enterpriseUserManageView.vue')
       },
+      // 个人数据管理
+      {
+        path: '/data/personal',
+        name: 'personalDataManage',
+        component: () => import('../views/userDataManage/personalDataManageView.vue')
+      },
+      // 企业数据管理
+      {
+        path: '/data/enterprise',
+        name: 'enterpriseDataManage',
+        component: () => import('../views/userDataManage/enterpriseDataManageView.vue')
+      },
       // 测试
       {
         path: '/test',
@@ -46,6 +58,16 @@ const routes = [
         component: () => import('../views/test/testView.vue')
       }
     ]
+  },
+  {
+    path: '/404',
+    name: '404',
+    component: () => import('../views/error/404View.vue')
+  },
+  {
+    path: '*',
+    name: '404',
+    redirect: '/404'
   }
   
 ]

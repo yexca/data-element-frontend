@@ -118,8 +118,8 @@
         <el-form-item label="电子邮箱" prop="email">
           <el-input v-model="form.email" placeholder="请输入电子邮箱" />
         </el-form-item>
-        <el-form-item label="电话号码" prop="phone">
-          <el-input v-model.number="form.phone" placeholder="请输入电话号码" />
+        <el-form-item label="手机号" prop="phone">
+          <el-input v-model.number="form.phone" placeholder="请输入手机号" />
         </el-form-item>
         <el-form-item label="性别" prop="gender">
           <el-radio-group v-model="form.gender">

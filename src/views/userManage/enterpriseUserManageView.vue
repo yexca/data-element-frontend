@@ -5,6 +5,8 @@
       <div class="content-header-search">
         <span style="margin-left: 10px;">用户名：</span>
         <el-input v-model="queryParams.username" placeholder="请输入用户名" clearable style="width: 200px;"></el-input>
+        <span style="margin-left: 10px;">企业名：</span>
+        <el-input v-model="queryParams.enterpriseName" placeholder="请输入企业名" clearable style="width: 200px;"></el-input>
         <el-button style="margin-left: 10px;" @click="handleSearch">搜索</el-button>
       </div>
       <div class="content-header-button" style="margin-right: 10px">
@@ -31,7 +33,7 @@
         </el-table-column>
         <el-table-column prop="phone" label="手机号" width="100">
         </el-table-column>
-        <el-table-column prop="countryName" label="国家" width="100">
+        <el-table-column prop="countryName" label="国家或地区" width="100">
         </el-table-column>
         <el-table-column prop="status" label="状态" width="100">
           <template slot-scope="scope">
@@ -113,12 +115,12 @@
           <el-input v-model="form.evidence" placeholder="请输入企业证明" />
         </el-form-item>
 
-        <!-- 国家选择 -->
-        <el-form-item label="国家" prop="countryId">
-          <el-select v-model="form.countryId" placeholder="请选择国家">
+        <!-- 国家或地区选择 -->
+        <el-form-item label="国家或地区" prop="countryId">
+          <el-select v-model="form.countryId" placeholder="请选择国家或地区">
             <el-option
               v-for="country in countries"
-              :key="country.id"
+              :key="country.countryId"
               :label="country.name"
               :value="country.countryId"
             ></el-option>
@@ -166,7 +168,8 @@ export default {
       queryParams: {
         page: 1,
         pageSize: 5,
-        username: null
+        username: null,
+        enterpriseName: null
       },
       tableData: [],
       total: null,
@@ -176,9 +179,9 @@ export default {
       dialogTitle: "",
       // 弹窗表单参数
       form: {},
-      // 国家信息表
+      // 国家或地区信息表
       countries: [],
-      // 用于选中的国家ID
+      // 用于选中的国家或地区ID
       selectedCountryId: null,
       // 表单规则
       rules :{
@@ -210,7 +213,7 @@ export default {
           {pattern: /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/|ftp:\/\/|hdfs:\/\/)[a-zA-Z0-9\-.]+(\.[a-zA-Z]{2,})?(:[0-9]{1,5})?(\/.*)?$/, message: '请输入正确的链接', trigger: 'blur'}
         ],
         countryId: [
-          {required: true, message: '请选择国家', trigger: 'change'}
+          {required: true, message: '请选择国家或地区', trigger: 'change'}
         ]
       }
     };
@@ -219,7 +222,7 @@ export default {
     this.fetchList();
   },
   mounted(){
-    // 获取国家信息
+    // 获取国家或地区信息
     listCountry().then(res => {
       this.countries = res.data.data;
     })
