@@ -51,6 +51,18 @@ const routes = [
         name: 'enterpriseDataManage',
         component: () => import('../views/userDataManage/enterpriseDataManageView.vue')
       },
+      // 国家信息管理
+      {
+        path: '/info/country',
+        name: 'countryManage',
+        component: () => import('../views/infoManage/countryView.vue')
+      },
+      // 角色信息管理
+      {
+        path: '/info/role',
+        name: 'roleManage',
+        component: () => import('../views/infoManage/roleView.vue')
+      },
       // 测试
       {
         path: '/test',
@@ -66,7 +78,7 @@ const routes = [
   },
   {
     path: '*',
-    name: '404',
+    name: 'Direct to 404',
     redirect: '/404'
   }
   

@@ -13,13 +13,13 @@
     </el-menu-item>
 
     <el-menu-item index="/employee">
-      <i class="el-icon-menu"></i>
+      <i class="el-icon-user"></i>
       <span slot="title">员工管理</span>
     </el-menu-item>
 
     <el-submenu index="/user">
         <template slot="title">
-        <i class="el-icon-location"></i>
+        <i class="el-icon-s-custom"></i>
         <span slot="title">用户管理</span>
       </template>
       <el-menu-item index="/users/personal">个人用户</el-menu-item>
@@ -28,11 +28,20 @@
 
     <el-submenu index="/data">
         <template slot="title">
-        <i class="el-icon-location"></i>
+        <i class="el-icon-s-data"></i>
         <span slot="title">数据管理</span>
       </template>
       <el-menu-item index="/data/personal">个人数据</el-menu-item>
       <el-menu-item index="/data/enterprise">企业数据</el-menu-item>
+    </el-submenu>
+
+    <el-submenu index="/info">
+        <template slot="title">
+        <i class="el-icon-info"></i>
+        <span slot="title">信息管理</span>
+      </template>
+      <el-menu-item index="/info/country">国家信息</el-menu-item>
+      <el-menu-item index="/info/role">角色信息</el-menu-item>
     </el-submenu>
 
     <el-menu-item index="/test">

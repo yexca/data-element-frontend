@@ -1,18 +1,48 @@
 <template>
   <div class="app-container">
     <!-- header -->
-    <div class="content-header" style="display: flex; justify-content: space-between;">
-      <div class="content-header-search">
+    <!-- <div class="content-header" style="display: flex; "> -->
+      <div class="content-header-search" style="display: flex; align-items: center;">
         <span style="margin-left: 10px;">用户名：</span>
-        <el-input v-model="queryParams.username" placeholder="请输入用户名" clearable style="width: 200px;"></el-input>
+        <el-input v-model="queryParams.username" placeholder="请输入用户名" clearable @@keyup.enter.native="handleSearch" style="width: 200px;"></el-input>
         <span style="margin-left: 10px;">企业名：</span>
-        <el-input v-model="queryParams.enterpriseName" placeholder="请输入企业名" clearable style="width: 200px;"></el-input>
-        <el-button style="margin-left: 10px;" @click="handleSearch">搜索</el-button>
+        <el-input v-model="queryParams.enterpriseName" placeholder="请输入企业名" clearable @keyup.13="handleSearch" style="width: 200px;"></el-input>
+        <span style="margin-left: 10px">邮箱：</span>
+        <el-input v-model="queryParams.email" placeholder="请输入邮箱" clearable style="width: 200px"></el-input>
+        
+        <el-button circle style="margin-left: 5px;" @click="showAdditionalFields"><i v-show="showAdditionalFieldsFlag" class="el-icon-arrow-up"></i><i v-show="!showAdditionalFieldsFlag" class="el-icon-arrow-down"></i></el-button>
+        <el-button style="margin-left: 10px;" @click="handleSearch">搜索</el-button>  
       </div>
-      <div class="content-header-button" style="margin-right: 10px">
+      <!-- <div class="content-header-button" style="margin-right: 10px">
         <el-button @click="handleAdd">新增</el-button>
-      </div>
-    </div>
+      </div> -->
+    <!-- </div> -->
+
+    <!-- 额外的输入框，默认不显示 -->
+    <div v-show="showAdditionalFieldsFlag">
+    <div style="display: flex; align-items: center; margin-top: 10px;">
+      <span style="margin-left: 10px;">ID：</span>
+      <el-input v-model="queryParams.userId" placeholder="请输入ID" clearable style="width: 15%;"></el-input>
+      <span style="margin-left: 10px;">国家或地区：</span>
+      <!-- <el-input v-model="queryParams.countryId" placeholder="请输入国家" clearable style="width: 11%;"></el-input> -->
+      <el-select v-model="queryParams.countryId" filterable clearable placeholder="请选择国家或地区" style="width: 15%;">
+        <el-option
+          v-for="country in countries"
+          :key="country.countryId"
+          :label="country.name"
+          :value="country.countryId">
+        </el-option>
+      </el-select>
+      <span style="margin-left: 10px;">电话号：</span>
+      <el-input v-model="queryParams.phone" placeholder="请输入电话号" clearable style="width: 15%;"></el-input>
+      <span style="margin-left: 10px;">状态：</span>
+      <!-- <el-input v-model="queryParams.status" placeholder="请输入状态" clearable style="width: 11%;"></el-input> -->
+      <el-select v-model="queryParams.status" clearable placeholder="请选择状态" style="width: 15%;">
+        <el-option label="启用" value="0"></el-option>
+        <el-option label="禁用" value="1"></el-option>
+      </el-select>
+    </div></div>
+    <el-divider></el-divider>
 
     <!-- 表格 -->
     <div class="content-main">
@@ -21,43 +51,61 @@
         :data="tableData"
         v-loading="loading"
         stripe
-        style="min-height: 400px"
       >
-        <el-table-column prop="userId" label="ID" width="50">
+        <el-table-column prop="userId" label="ID" width="60" sortable fixed="left">
         </el-table-column>
-        <el-table-column prop="username" label="用户名" width="100">
+        <el-table-column prop="username" label="用户名" width="120" sortable>
         </el-table-column>
-        <el-table-column prop="enterpriseName" label="企业名" width="100">
+        <el-table-column prop="enterpriseName" label="企业名" width="100" sortable>
         </el-table-column>
-        <el-table-column prop="email" label="邮箱" width="200">
+        <el-table-column prop="email" label="邮箱" width="170">
         </el-table-column>
-        <el-table-column prop="phone" label="手机号" width="100">
+        <el-table-column prop="countryName" label="国家或地区" width="100" align="center">
         </el-table-column>
-        <el-table-column prop="countryName" label="国家或地区" width="100">
+        <el-table-column prop="phone" label="电话号" width="120">
         </el-table-column>
-        <el-table-column prop="status" label="状态" width="100">
+        <el-table-column prop="status" label="状态" width="80" fixed="right" align="center">
           <template slot-scope="scope">
             <el-tag type="success" v-if="scope.row.status == '启用'"
               >启用</el-tag
             >
-            <el-tag type="success" v-if="scope.row.status == '禁用'"
+            <el-tag type="danger" v-if="scope.row.status == '禁用'"
               >禁用</el-tag
             >
           </template>
         </el-table-column>
-        <el-table-column label="操作">
+        <el-table-column label="操作" width="260" fixed="right">
+          <template slot="header">
+            <el-button @click="handleAdd">新增</el-button>
+          </template>
           <template slot-scope="scope">
             <el-button
-              type="text"
+              v-show="scope.row.status == '启用'"
+              type="info"
+              size="mini"
+              icon="el-icon-circle-close"
+              @click="handleStatus(scope.row, 1)"
+              >禁用</el-button
+            >
+            <el-button
+              v-show="scope.row.status == '禁用'"
+              style="margin-left: 0;"
+              type="success"
+              size="mini"
+              icon="el-icon-circle-check"
+              @click="handleStatus(scope.row, 0)"
+              >启用</el-button
+            >
+            <el-button
               size="mini"
               icon="el-icon-edit"
               @click="handleUpdate(scope.row)"
               >修改</el-button
             >
             <el-button
-              type="text"
+              type="danger"
               size="mini"
-              icon="el-icon-edit"
+              icon="el-icon-delete"
               @click="handleDelete(scope.row)"
               >删除</el-button
             >
@@ -71,7 +119,6 @@
       <el-pagination
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
-        :current-page="currentPage4"
         :page-sizes="[5, 10, 20, 40]"
         :page-size="5"
         layout="total, sizes, prev, pager, next, jumper"
@@ -80,14 +127,14 @@
       </el-pagination>
     </div>
 
-    <!-- 添加或修改员工信息对话框 -->
-    <el-dialog
+    <!-- 添加或修改员工信息右侧抽屉 -->
+    <el-drawer
       :title="dialogTitle"
       :visible.sync="openDialog"
       width="500px"
       append-to-body
     >
-      <el-form ref="form" :model="form" :rules="rules" label-width="80px">
+      <el-form ref="form" status-icon :model="form" :rules="rules" label-width="100px" class="drawer-form">
         <el-form-item label="用户名" prop="username">
           <el-input v-model="form.username" placeholder="请输入用户名" />
         </el-form-item>
@@ -117,7 +164,7 @@
 
         <!-- 国家或地区选择 -->
         <el-form-item label="国家或地区" prop="countryId">
-          <el-select v-model="form.countryId" placeholder="请选择国家或地区">
+          <el-select v-model="form.countryId" filterable clearable placeholder="请选择国家或地区">
             <el-option
               v-for="country in countries"
               :key="country.countryId"
@@ -128,12 +175,12 @@
         </el-form-item>
 
       </el-form>
-      <div slot="footer" class="dialog-footer">
+      <div class="demo-drawer__footer" style="display: flex; justify-content: space-around;">
         <el-button type="primary" @click="submitForm">确 定</el-button>
         <el-button type="info" @click="resetForm">重 置</el-button>
         <el-button @click="cancel">取 消</el-button>
       </div>
-    </el-dialog>
+    </el-drawer>
   </div>
 </template>
 
@@ -164,20 +211,27 @@ export default {
       };
     // 密码确认--结束
     return {
+      // 展示更多搜索框
+      showAdditionalFieldsFlag: false,
       loading: true,
       queryParams: {
         page: 1,
         pageSize: 5,
+        userId: null,
         username: null,
-        enterpriseName: null
+        enterpriseName: null,
+        email: null,
+        phone: null,
+        countryId: null,
+        status: null
       },
       tableData: [],
       total: null,
-      // 是否显示弹窗
+      // 是否显示右侧抽屉
       openDialog: false,
-      // 弹窗标题
+      // 右侧抽屉标题
       dialogTitle: "",
-      // 弹窗表单参数
+      // 右侧抽屉表单参数
       form: {},
       // 国家或地区信息表
       countries: [],
@@ -199,7 +253,7 @@ export default {
         ],
         enterpriseName: [
           {required: true, message: '请输入企业名称', trigger: 'blur'},
-          { pattern: /^[A-Za-z0-9\u4e00-\u9fa5]+$/, message: '仅允许数字、字母和汉字', trigger: 'blur'}
+          { pattern: /^[\u4e00-\u9fff\u3040-\u30ff\uac00-\ud7afA-Za-z0-9\s]+$/, message: '仅允许汉字、字母、数字、日文和韩文', trigger: 'blur'}
         ],
         email: [
           {required: true, message: '请输入邮箱', trigger: 'blur'},
@@ -236,6 +290,10 @@ export default {
         this.loading = false;
       });
     },
+    // 展示更多搜索框
+    showAdditionalFields() {
+      this.showAdditionalFieldsFlag = !this.showAdditionalFieldsFlag;
+    },
     handleSizeChange(val) {
       this.queryParams.pageSize = val;
       this.fetchList();
@@ -263,12 +321,12 @@ export default {
         evidence: null
       };
     },
-    // 弹窗取消
+    // 右侧抽屉取消
     cancel() {
       this.openDialog = false;
       this.reset();
     },
-    // 弹窗内容重置
+    // 右侧抽屉内容重置
     resetForm() {
       this.reset();
     },
@@ -279,7 +337,7 @@ export default {
       getEnterpriseUser(userId).then((res) => {
         this.form = res.data.data;
         // console.log(this.form)
-        // 显示弹窗
+        // 显示右侧抽屉
         this.dialogTitle = "修改企业用户信息";
         this.openDialog = true;
       });
@@ -336,6 +394,20 @@ export default {
         });
         }
       })
+    },
+    // 状态禁用或启用
+    handleStatus(row, status){
+      this.reset();
+      this.form.status = status;
+      updateEnterpriseUser(row.userId, this.form).then(() => {
+        // 成功提醒弹窗
+        this.$message({
+            message: '修改成功',
+            type: 'success'
+          });
+        // 重新获取列表
+        this.fetchList();
+      });
     }
   },
 }

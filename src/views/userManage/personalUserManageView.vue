@@ -29,24 +29,24 @@
       <el-input v-model="queryParams.email" placeholder="请输入邮箱" clearable style="width: 11%;"></el-input>
       <span style="margin-left: 10px;">国家或地区：</span>
       <!-- <el-input v-model="queryParams.countryId" placeholder="请输入国家" clearable style="width: 11%;"></el-input> -->
-      <el-select v-model="queryParams.countryId" placeholder="请选择国家或地区" style="width: 11%;">
+      <el-select v-model="queryParams.countryId" placeholder="请选择国家或地区" clearable filterable style="width: 11%;">
         <el-option
           v-for="country in countries"
-          :key="country.id"
+          :key="country.countryId"
           :label="country.name"
           :value="country.countryId">
         </el-option>
       </el-select>
       <span style="margin-left: 10px;">性别：</span>
       <!-- <el-input v-model="queryParams.gender" placeholder="请输入性别" clearable style="width: 11%;"></el-input> -->
-      <el-select v-model="queryParams.gender" placeholder="请选择性别" style="width: 11%;">
+      <el-select v-model="queryParams.gender" placeholder="请选择性别" clearable style="width: 11%;">
         <el-option label="男" value="1"></el-option>
         <el-option label="女" value="2"></el-option>
         <el-option label="未知" value="0"></el-option>
       </el-select>
       <span style="margin-left: 10px;">状态：</span>
       <!-- <el-input v-model="queryParams.status" placeholder="请输入状态" clearable style="width: 11%;"></el-input> -->
-      <el-select v-model="queryParams.gender" placeholder="请选择状态" style="width: 11%;">
+      <el-select v-model="queryParams.status" placeholder="请选择状态" clearable style="width: 11%;">
         <el-option label="启用" value="0"></el-option>
         <el-option label="禁用" value="1"></el-option>
       </el-select>
@@ -82,7 +82,7 @@
             <el-tag type="success" v-if="scope.row.status == '启用'"
               >启用</el-tag
             >
-            <el-tag type="success" v-if="scope.row.status == '禁用'"
+            <el-tag type="danger" v-if="scope.row.status == '禁用'"
               >禁用</el-tag
             >
           </template>
@@ -132,7 +132,6 @@
       <el-pagination
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
-        :current-page="currentPage4"
         :page-sizes="[5, 10, 20, 40]"
         :page-size="5"
         layout="total, sizes, prev, pager, next, jumper"
@@ -141,14 +140,14 @@
       </el-pagination>
     </div>
 
-    <!-- 添加或修改员工信息对话框 -->
+    <!-- 添加或修改员工信息右侧抽屉 -->
     <el-drawer
       :title="dialogTitle"
       :visible.sync="openDialog"
       width="500px"
       append-to-body
     >
-      <el-form ref="form" :model="form" :rules="rules" label-width="80px" class="drawer-form">
+      <el-form ref="form" :model="form" :rules="rules" label-width="100px" class="drawer-form">
         <el-form-item label="用户名" prop="username">
           <el-input v-model="form.username" placeholder="请输入用户名" />
         </el-form-item>
@@ -181,10 +180,10 @@
 
         <!-- 国家或地区选择 -->
         <el-form-item label="国家或地区" prop="countryId">
-          <el-select v-model="form.countryId" placeholder="请选择国家或地区">
+          <el-select v-model="form.countryId" filterable clearable placeholder="请选择国家或地区">
             <el-option
               v-for="country in countries"
-              :key="country.id"
+              :key="country.countryId"
               :label="country.name"
               :value="country.countryId"
             ></el-option>
@@ -250,11 +249,11 @@ export default {
       showAdditionalFieldsFlag: false,
       tableData: [],
       total: null,
-      // 是否显示弹窗
+      // 是否显示右侧抽屉
       openDialog: false,
-      // 弹窗标题
+      // 右侧抽屉标题
       dialogTitle: "",
-      // 弹窗表单参数
+      // 右侧抽屉表单参数
       form: {},
       // 国家或地区信息表
       countries: [],
@@ -275,7 +274,7 @@ export default {
           { validator: validatePass2, trigger: 'blur' }
         ],
         nickname: [
-          { pattern: /^[A-Za-z0-9\u4e00-\u9fa5]+$/, message: '仅允许数字、字母和汉字', trigger: 'blur'}
+          { pattern: /^[\u4e00-\u9fff\u3040-\u30ff\uac00-\ud7afA-Za-z0-9\s]+$/, message: '仅允许汉字、字母、数字、日文和韩文', trigger: 'blur'}
         ],
         email: [
           {pattern: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/, message: '请输入正确的邮箱格式', trigger: 'blur'}
@@ -298,7 +297,7 @@ export default {
   },
   created(){
     this.fetchList();
-    this.tableWidth = document.body.clientWidth - 250;
+    // this.tableWidth = document.body.clientWidth - 250;
   },
   mounted(){
     // 获取国家或地区信息
@@ -347,12 +346,12 @@ export default {
         status: null,
       };
     },
-    // 弹窗取消
+    // 右侧抽屉取消
     cancel() {
       this.openDialog = false;
       this.reset();
     },
-    // 弹窗内容重置
+    // 右侧抽屉内容重置
     resetForm() {
       this.reset();
     },
@@ -363,7 +362,7 @@ export default {
       getPersonalUser(userId).then((res) => {
         this.form = res.data.data;
         // console.log(this.form)
-        // 显示弹窗
+        // 显示右侧抽屉
         this.dialogTitle = "修改个人用户信息";
         this.openDialog = true;
       });
