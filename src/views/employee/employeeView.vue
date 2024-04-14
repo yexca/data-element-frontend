@@ -338,15 +338,24 @@ export default {
     // });
     // 获取国家信息
     listCountry().then(res => {
-      this.countries = res.data.data;
-    })
+      if(res && res.data && res.data.data){
+        this.countries = res.data.data;
+      }else{
+        this.countries = [];
+      }
+    });
   },
   methods: {
     fetchList() {
       this.loading = true;
       listEmployee(this.queryParams).then((res) => {
-        this.tableData = res.data.data.records;
-        this.total = res.data.data.total;
+        if(res && res.data && res.data.data){
+          this.tableData = res.data.data.records;
+          this.total = res.data.data.total;
+        }else{
+          this.tableData = [];
+          this.total = null;
+        }
         this.loading = false;
       });
     },

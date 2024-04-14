@@ -1,7 +1,7 @@
 <template>
   <div class="main-container">
-    <div class="overlay" v-show="isActive"></div>
-    <div class="search-container">
+    <div class="overlay" v-show="isActive || isLoading"></div>
+    <div class="search-container" :class="{ 'top-search': searchPerformed }">
       <div class="search-box-container">
         <input
           class="search-box"
@@ -10,9 +10,22 @@
           @keyup.enter="performSearch"
           @focus="isActive = true"
           @blur="isActive = false"
-          placeholder="Search Google or type a URL"
+          placeholder="按空格键开始搜索"
         />
         <button @click="performSearch" class="search-button">搜索</button>
+      </div>
+      <div v-if="isLoading" class="loading">正在加载...</div>
+      <div v-if="searchResults.length" class="results-container">
+        <div v-for="item in searchResults" :key="item.dataId" @click="navigate(item)" class="result-item">
+          <h3 v-html="highlightText(item.name)"></h3>
+          <p v-html="highlightText(item.description)"></p>
+          <div class="additional-info">
+            <span>用户名: {{ item.username }}</span> |
+            <span>分类: {{ item.categoryName || '未分类' }}</span> |
+            <span>创建时间: {{ item.createTime }}</span> |
+            <span>修改时间: {{ item.updateTime }}</span>
+          </div>
+        </div>
       </div>
       <div class="auth-buttons">
         <button @click="login" class="auth-button">登录</button>
@@ -23,11 +36,16 @@
 </template>
 
 <script>
+import { search } from '@/api/search'
+
 export default {
   data() {
     return {
       searchQuery: '',
-      isActive: false
+      isActive: false,
+      searchResults: [],
+      isLoading: false,
+      searchPerformed: false
     };
   },
   mounted() {
@@ -38,21 +56,40 @@ export default {
   },
   methods: {
     login() {
-      // 实现登录逻辑
-      alert('登录功能待实现');
+      this.$router.push('/login');
     },
     register() {
-      // 实现注册逻辑
-      alert('注册功能待实现');
+      this.$router.push('/register');
     },
-    performSearch() {
-      // 用来处理搜索逻辑
-      alert(`搜索内容: ${this.searchQuery}`);
+    async performSearch() {
+      if (!this.searchQuery) return;
+      this.isLoading = true;
+      try {
+        const response = await search({ kw: this.searchQuery });
+        if (response.data.code === 1) {
+          this.searchResults = response.data.data.records.filter(item => item.status !== 2);
+          this.searchPerformed = true;
+        } else {
+          alert(response.data.msg || '搜索失败');
+        }
+      } catch (error) {
+        console.error('搜索错误:', error);
+        alert('搜索请求失败');
+      }
+      this.isLoading = false;
       this.isActive = false;
       this.$refs.searchInput.blur();
     },
+    highlightText(text) {
+      return text.replace(/<em>(.*?)<\/em>/g, '<span class="highlight" style="background-color: #ff0; color: black;">$1</span>');
+    },
+    navigate(item) {
+      const routePath = item.type === 1 ? '/data/personal' : '/data/enterprise';
+      this.$router.push({ path: routePath, query: { id: item.dataId } });
+    },
     activateSearch() {
       this.$refs.searchInput.focus();
+      window.scrollTo(0, 0);
     },
     handleGlobalKeyUp(event) {
       if (event.key === ' ') {
@@ -63,11 +100,13 @@ export default {
 }
 </script>
 
+
 <style scoped>
 .main-container {
-background-image: url('@/static/pic/104578537_p0.png');
-background-size: cover;
-height: 100vh;
+  background-image: url('@/static/pic/104578537_p0.png');
+  background-size: cover;
+  background-attachment: fixed;  /* 确保背景图片固定 */
+  min-height: 100vh;
 }
 
 .overlay {
@@ -87,7 +126,12 @@ height: 100vh;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 100vh;
+  min-height: 100vh;  /* 保证最小高度为视窗高度 */
+}
+
+.top-search {
+  justify-content: flex-start;
+  padding-top: 20px;
 }
 
 .search-box-container {
@@ -135,4 +179,41 @@ height: 100vh;
   box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
   transform: translateY(-2px);
 }
+
+.loading {
+  position:absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 1.5rem;
+  color: white;
+}
+
+.results-container {
+  position: absolute;
+  top: 120px;
+  width: 100%;
+  max-width: 800px; /* Set a max-width for results */
+  text-align: center;
+}
+
+.result-item {
+  background: rgba(255, 255, 255, 0.8);
+  margin: 10px auto; /* Center items */
+  padding: 20px;
+  border-radius: 10px;
+  cursor: pointer; /* Indicates item is clickable */
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Soft shadow for depth */
+}
+
+.additional-info {
+  font-size: 0.85em;
+  margin-top: 10px;
+  color: #666;
+}
+
+/* .highlight {
+  background-color: #ff0;
+  color: black;
+} */
 </style>

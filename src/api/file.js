@@ -6,11 +6,20 @@ export function upload(file) {
     // formData.append("file", file);
 
     return request({
-        url: '/admin/common/upload',
+        url: '/admin/file',
         method: 'post',
         data: file,
         headers: {
             'Content-Type': 'multipart/form-data'
         }
+    })
+}
+
+// 删除
+export function deleteFile(query) {
+    return request({
+        url: '/admin/file',
+        method: 'delete',
+        params: query
     })
 }

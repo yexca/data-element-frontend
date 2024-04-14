@@ -1,30 +1,30 @@
 <template>
   <el-menu
     v-if="role == 0"
-    default-active="/"
+    default-active="/admin/dashboard"
     class="el-menu-vertical-demo"
     @open="handleOpen"
     @close="handleClose"
     :collapse="isCollapse"
     router
   >
-  <el-menu-item index="/dashboard">
+  <el-menu-item index="/admin/dashboard">
       <i class="el-icon-menu"></i>
       <span slot="title">dashboard</span>
     </el-menu-item>
 
-    <el-menu-item index="/employee">
+    <el-menu-item index="/admin/employee">
       <i class="el-icon-user"></i>
       <span slot="title">员工管理</span>
     </el-menu-item>
 
-    <el-submenu index="/user">
+    <el-submenu index="/admin/user">
         <template slot="title">
         <i class="el-icon-s-custom"></i>
         <span slot="title">用户管理</span>
       </template>
-      <el-menu-item index="/users/personal">个人用户</el-menu-item>
-      <el-menu-item index="/users/enterprise">企业用户</el-menu-item>
+      <el-menu-item index="/admin/users/personal">个人用户</el-menu-item>
+      <el-menu-item index="/admin/users/enterprise">企业用户</el-menu-item>
     </el-submenu>
 
     <el-submenu index="/data">
@@ -32,8 +32,8 @@
         <i class="el-icon-s-data"></i>
         <span slot="title">数据管理</span>
       </template>
-      <el-menu-item index="/data/personal">个人数据</el-menu-item>
-      <el-menu-item index="/data/enterprise">企业数据</el-menu-item>
+      <el-menu-item index="/admin/data/personal">个人数据</el-menu-item>
+      <el-menu-item index="/admin/data/enterprise">企业数据</el-menu-item>
     </el-submenu>
 
     <el-submenu index="/info">
@@ -41,9 +41,9 @@
         <i class="el-icon-info"></i>
         <span slot="title">信息管理</span>
       </template>
-      <el-menu-item index="/info/country">国家信息</el-menu-item>
-      <el-menu-item index="/info/category">分类信息</el-menu-item>
-      <el-menu-item index="/info/role">角色信息</el-menu-item>
+      <el-menu-item index="/admin/info/country">国家信息</el-menu-item>
+      <el-menu-item index="/admin/info/category">分类信息</el-menu-item>
+      <el-menu-item index="/admin/info/role">角色信息</el-menu-item>
     </el-submenu>
 
     <el-menu-item index="/test">

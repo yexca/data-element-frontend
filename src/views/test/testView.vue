@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import { upload } from '@/api/common'
+import { upload } from '@/api/file'
 export default {
     data() {
         return {

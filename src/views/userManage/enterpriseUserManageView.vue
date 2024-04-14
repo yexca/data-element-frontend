@@ -64,6 +64,8 @@
         </el-table-column>
         <el-table-column prop="phone" label="电话号" width="120">
         </el-table-column>
+        <el-table-column prop="evidence" label="证明材料" width="200">
+        </el-table-column>
         <el-table-column prop="status" label="状态" width="80" fixed="right" align="center">
           <template slot-scope="scope">
             <el-tag type="success" v-if="scope.row.status == '启用'"
@@ -153,7 +155,23 @@
         <el-form-item label="电话号码" prop="phone">
           <el-input v-model="form.phone" placeholder="请输入电话号码" />
         </el-form-item>
-        <el-form-item label="企业证明" prop="evidenceType">
+
+        <el-form-item label="企业证明" prop="evidence">
+          <el-upload
+            class="upload-demo"
+            :file-list="fileList"
+            :http-request="customUpload"
+            :before-upload="beforeUpload"
+            :before-remove="beforeRemove"
+            :on-remove="handleRemove"
+            :limit="1"
+          >
+            <el-button size="small" type="primary">点击上传</el-button>
+            <div slot="tip" class="el-upload__tip">文件大小不超过 10MB</div>
+          </el-upload>
+        </el-form-item>
+
+        <!-- <el-form-item label="企业证明" prop="evidenceType">
           <el-radio-group v-model="form.evidenceType">
             <el-radio :label="0">输入链接</el-radio>
             <el-radio :label="1">上传文件</el-radio>
@@ -169,12 +187,13 @@
             :http-request="customUpload"
             :before-upload="beforeUpload"
             :before-remove="beforeRemove"
+            :on-remove="handleRemove"
             :limit="1"
           >
             <el-button size="small" type="primary">点击上传</el-button>
             <div slot="tip" class="el-upload__tip">文件大小不超过 10MB</div>
           </el-upload>
-        </el-form-item>
+        </el-form-item> -->
         
 
         <!-- 国家或地区选择 -->
@@ -202,7 +221,7 @@
 <script>
 import { listEnterpriseUser, getEnterpriseUser, addEnterpriseUser, updateEnterpriseUser, delEnterpriseUser } from '@/api/enterpriseUser';
 import { listCountry } from "@/api/country";
-import { upload } from '@/api/common'
+import { upload,deleteFile } from '@/api/file'
 export default {
   data() {
     // 密码确认--开始
@@ -280,9 +299,9 @@ export default {
         phone: [
           { pattern: /^\d{6,11}$/, message: '电话号码必须为数字且为 6-11 位数字', trigger: 'blur'}
         ],
-        evidenceType: [
-          {required: true, message: '请选择提交证明材料方式', trigger: 'blur'}
-        ],
+        // evidenceType: [
+        //   {required: true, message: '请选择提交证明材料方式', trigger: 'blur'}
+        // ],
         evidence: [
           {required: true, message: '请输入企业证明', trigger: 'blur'},
           {pattern: /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/|ftp:\/\/|hdfs:\/\/)[a-zA-Z0-9\-.]+(\.[a-zA-Z]{2,})?(:[0-9]{1,5})?(\/.*)?$/, message: '请输入正确的链接', trigger: 'blur'}
@@ -339,7 +358,7 @@ export default {
         phone: null,
         countryId: null,
         status: null,
-        evidenceType: 0, // 证明方式，默认链接
+        // evidenceType: 0, // 证明方式，默认链接
         evidence: null
       };
       this.fileList = [];
@@ -359,8 +378,15 @@ export default {
       const userId = row.userId;
       getEnterpriseUser(userId).then((res) => {
         this.form = res.data.data;
+        // 填充文件链接到fileList
+        this.fileList.push(
+          {
+            name: this.form.enterpriseName + '证明材料',
+            url: this.form.fileLink
+          }
+        )
         //证明材料
-        this.form.evidenceType = 0
+        // this.form.evidenceType = 0
         // console.log(this.form)
         // 显示右侧抽屉
         this.dialogTitle = "修改企业用户信息";
@@ -447,6 +473,39 @@ export default {
         this.form.evidence = res.data.data;
       })
     },
+    // 删除文件的逻辑
+    handleRemove() {
+      if (!this.form.fileLink) {
+        return this.$notify({
+          title: '警告',
+          message: '没有文件可以删除',
+          type: 'warning',
+          duration: 1500
+        });
+      }else{
+        this.$notify({
+          title: '消息',
+          message: '文件删除中',
+          duration: 1500
+        })
+        deleteFile({file: this.form.fileLink}).then(() => {
+          this.$notify({
+          title: '成功',
+          message: '文件删除成功',
+          type: 'success',
+          duration: 1000
+        });
+        this.form.fileLink = null;  // 清空fileLink
+        }).catch(() => {
+        this.$notify({
+          title: '错误',
+          message: '删除失败',
+          type: 'error',
+          duration: 1000
+        });
+      });
+      }
+    },
     // 上传文件前
     // beforeUpload(file){
     beforeUpload(){
@@ -458,13 +517,8 @@ export default {
     },
     // 在移除文件前
     // beforeRemove(file, fileList){
-    beforeRemove(){
-      this.$notify({
-        title: '警告',
-        message: '暂时无法移除，如需更改请通过修改功能',
-        type: 'warning',
-        duration: 1500
-      })
+    beforeRemove(file){
+      return this.$confirm(`确定移除 ${ file.name }？`);
     }
   },
 }

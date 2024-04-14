@@ -9,7 +9,7 @@ import request from '@/utils/request'
 //   })
 // }
 
-// 查询员工信息列表
+// 查询个人用户列表
 export function listPersonalUser(query) {
   return request({
     url: '/admin/users/personal',
@@ -18,7 +18,7 @@ export function listPersonalUser(query) {
   })
 }
 
-// 查询员工信息详细
+// 查询个人用户详细
 export function getPersonalUser(UserId) {
   return request({
     url: '/admin/users/personal/' + UserId,
@@ -26,7 +26,7 @@ export function getPersonalUser(UserId) {
   })
 }
 
-// 新增员工信息
+// 新增个人用户
 export function addPersonalUser(data) {
   return request({
     url: '/admin/users/personal',
@@ -35,7 +35,7 @@ export function addPersonalUser(data) {
   })
 }
 
-// 修改员工信息
+// 修改个人用户
 export function updatePersonalUser(userId, data) {
   return request({
     url: '/admin/users/personal/' + userId,
@@ -44,10 +44,10 @@ export function updatePersonalUser(userId, data) {
   })
 }
 
-// 删除员工信息
+// 删除个人用户
 export function delPersonalUser(userId) {
   return request({
-    url: '/admin/usesr/personal/' + userId,
+    url: '/admin/users/personal/' + userId,
     method: 'delete'
   })
 }

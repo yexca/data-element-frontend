@@ -24,7 +24,6 @@
 
 <script>
 import { empLogin } from '@/api/employee';
-import router from '@/router';
 
 export default {
   data() {
@@ -42,9 +41,13 @@ export default {
         return;
       }
       empLogin(this.loginForm).then(res => {
+        // 假设登录成功后后端会返回一个token和用户角色信息
         localStorage.setItem('role', res.data.data.role);
         localStorage.setItem('token', res.data.data.token);
-        router.push('/dashboard');
+
+        // 检查是否有重定向的目标页面，如果有，登录后跳转到该页面
+        const redirect = this.$route.query.redirect || '/admin/dashboard'; // 如果没有指定重定向页面，默认跳转到管理仪表板
+        this.$router.push(redirect);
       }).catch(error => {
         this.$message.error('登录失败: ' + error.message);
       });
@@ -52,6 +55,7 @@ export default {
   }
 }
 </script>
+
 
 <style scoped>
 .login-container {
