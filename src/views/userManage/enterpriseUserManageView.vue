@@ -220,7 +220,7 @@
 
 <script>
 import { listEnterpriseUser, getEnterpriseUser, addEnterpriseUser, updateEnterpriseUser, delEnterpriseUser } from '@/api/enterpriseUser';
-import { listCountry } from "@/api/country";
+import { listAllCountry } from "@/api/country";
 import { upload,deleteFile } from '@/api/file'
 export default {
   data() {
@@ -317,7 +317,7 @@ export default {
   },
   mounted(){
     // 获取国家或地区信息
-    listCountry().then(res => {
+    listAllCountry().then(res => {
       this.countries = res.data.data;
     })
   },

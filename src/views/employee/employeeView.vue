@@ -231,7 +231,7 @@
 <script>
 import { listEmployee, addEmployee, updateEmployee, getEmployee, delEmployee } from "@/api/employee";
 // import { listRole } from '@/api/role'
-import { listCountry } from "@/api/country";
+import { listAllCountry } from "@/api/country";
 export default {
   data() {
     // 密码确认--开始
@@ -337,7 +337,7 @@ export default {
     //   this.roles = res.data.data;
     // });
     // 获取国家信息
-    listCountry().then(res => {
+    listAllCountry().then(res => {
       if(res && res.data && res.data.data){
         this.countries = res.data.data;
       }else{

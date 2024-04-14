@@ -206,7 +206,7 @@
 
 <script>
 import { listPersonalUser, getPersonalUser, addPersonalUser, updatePersonalUser, delPersonalUser } from '@/api/PersonalUser';
-import { listCountry } from "@/api/country";
+import { listAllCountry } from "@/api/country";
 export default {
   data() {
     // 密码确认--开始
@@ -301,7 +301,7 @@ export default {
   },
   mounted(){
     // 获取国家或地区信息
-    listCountry().then(res => {
+    listAllCountry().then(res => {
       this.countries = res.data.data;
     })
   },
