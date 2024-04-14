@@ -87,11 +87,11 @@ const routes = [
         component: () => import('../views/infoManage/categoryView.vue')
       },
       // 角色信息管理
-      {
-        path: '/admin/info/role',
-        name: 'roleManage',
-        component: () => import('../views/infoManage/roleView.vue')
-      },
+      // {
+      //   path: '/admin/info/role',
+      //   name: 'roleManage',
+      //   component: () => import('../views/infoManage/roleView.vue')
+      // },
       // 测试
       {
         path: '/test',

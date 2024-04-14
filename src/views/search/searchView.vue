@@ -15,16 +15,29 @@
         <button @click="performSearch" class="search-button">搜索</button>
       </div>
       <div v-if="isLoading" class="loading">正在加载...</div>
-      <div v-if="searchResults.length" class="results-container">
-        <div v-for="item in searchResults" :key="item.dataId" @click="navigate(item)" class="result-item">
-          <h3 v-html="highlightText(item.name)"></h3>
-          <p v-html="highlightText(item.description)"></p>
-          <div class="additional-info">
-            <span>用户名: {{ item.username }}</span> |
-            <span>分类: {{ item.categoryName || '未分类' }}</span> |
-            <span>创建时间: {{ item.createTime }}</span> |
-            <span>修改时间: {{ item.updateTime }}</span>
+      <div v-if="searchPerformed">
+        <div v-if="searchResults.length" class="results-container">
+          <div v-for="item in paginatedResults" :key="item.dataId" @click="navigate(item)" class="result-item">
+            <h3 v-html="highlightText(item.name)" target="_blank"></h3>
+            <p v-html="highlightText(item.description)" target="_blank"></p>
+            <div class="additional-info">
+              <span>用户名: {{ item.username }}</span> |
+              <span>分类: {{ item.categoryName || '未分类' }}</span> |
+              <span>创建时间: {{ item.createTime }}</span> |
+              <span>修改时间: {{ item.updateTime }}</span>
+            </div>
           </div>
+          <div class="pagination-container">
+            <div class="pagination">
+              <button @click="previousPage" :disabled="currentPage <= 1" class="pagination-button">上一页</button>
+              <span class="page-info">{{ currentPage }} / {{ totalPages }}</span>
+              <button @click="nextPage" :disabled="currentPage >= totalPages" class="pagination-button">下一页</button>
+            </div>
+            <div class="total-results">总结果数: {{ totalResults }}</div>
+          </div>
+        </div>
+        <div v-else class="results-container no-results">
+          <div class="result-item">没有找到结果</div>
         </div>
       </div>
       <div class="auth-buttons">
@@ -45,8 +58,20 @@ export default {
       isActive: false,
       searchResults: [],
       isLoading: false,
-      searchPerformed: false
+      searchPerformed: false,
+      totalResults: 0,
+      currentPage: 1,
+      resultsPerPage: 10
     };
+  },
+  computed: {
+    totalPages() {
+      return Math.ceil(this.totalResults / this.resultsPerPage);
+    },
+    paginatedResults() {
+      const start = (this.currentPage - 1) * this.resultsPerPage;
+      return this.searchResults.slice(start, start + this.resultsPerPage);
+    }
   },
   mounted() {
     window.addEventListener('keyup', this.handleGlobalKeyUp);
@@ -68,6 +93,7 @@ export default {
         const response = await search({ kw: this.searchQuery });
         if (response.data.code === 1) {
           this.searchResults = response.data.data.records.filter(item => item.status !== 2);
+          this.totalResults = response.data.data.total;
           this.searchPerformed = true;
         } else {
           alert(response.data.msg || '搜索失败');
@@ -85,7 +111,7 @@ export default {
     },
     navigate(item) {
       const routePath = item.type === 1 ? '/data/personal' : '/data/enterprise';
-      this.$router.push({ path: routePath, query: { id: item.dataId } });
+      this.$router.push({ path: routePath, query: { id: item.dataId }, target: '_blank' });
     },
     activateSearch() {
       this.$refs.searchInput.focus();
@@ -94,6 +120,16 @@ export default {
     handleGlobalKeyUp(event) {
       if (event.key === ' ') {
         this.activateSearch();
+      }
+    },
+    nextPage() {
+      if (this.currentPage < this.totalPages) {
+        this.currentPage++;
+      }
+    },
+    previousPage() {
+      if (this.currentPage > 1) {
+        this.currentPage--;
       }
     }
   }
@@ -107,6 +143,8 @@ export default {
   background-size: cover;
   background-attachment: fixed;  /* 确保背景图片固定 */
   min-height: 100vh;
+  display: flex;
+  justify-content: center; /* 确保主容器内容水平居中 */
 }
 
 .overlay {
@@ -126,7 +164,8 @@ export default {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 100vh;  /* 保证最小高度为视窗高度 */
+  min-height: 100vh;
+  width: 100%; /* 确保搜索容器占满整个可视区域宽度 */
 }
 
 .top-search {
@@ -158,7 +197,7 @@ export default {
 }
 
 .auth-buttons {
-  position: absolute;
+  position: fixed;
   top: 10px;
   right: 10px;
 }
@@ -190,25 +229,95 @@ export default {
 }
 
 .results-container {
-  position: absolute;
-  top: 120px;
+  position: relative;
+  top: 0;
   width: 100%;
-  max-width: 800px; /* Set a max-width for results */
+  max-width: 800px;
   text-align: center;
+  background: rgba(255, 255, 255, 0.8); /* 应用半透明背景 */
+  padding: 20px;
+  border-radius: 10px;
+  margin-top: 20px;
 }
 
 .result-item {
-  background: rgba(255, 255, 255, 0.8);
-  margin: 10px auto; /* Center items */
+  background: rgba(255, 255, 255, 0.9);
+  margin: 10px auto;
   padding: 20px;
   border-radius: 10px;
-  cursor: pointer; /* Indicates item is clickable */
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Soft shadow for depth */
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  transition: background-color 0.3s, transform 0.3s; /* 添加平滑过渡效果 */
+  user-select: none; /* 防止文本被选择 */
+  cursor: pointer; /* 显示可以点击的指针 */
+}
+
+.result-item:hover {
+  background-color: #f0f0f0; /* 鼠标悬停时改变背景色 */
+  transform: translateY(-5px); /* 轻微向上移动 */
+  box-shadow: 0 4px 6px rgba(0,0,0,0.2); /* 加深阴影效果 */
+}
+
+.result-item:active {
+  background-color: #e0e0e0; /* 鼠标点击时改变背景色 */
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* 恢复原始阴影效果 */
 }
 
 .additional-info {
   font-size: 0.85em;
   margin-top: 10px;
+  color: #666;
+}
+
+.pagination-container {
+  background: rgba(255, 255, 255, 0.8);
+  padding: 10px;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.pagination-button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 5px 10px;
+  margin: 0 10px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.pagination-button:hover {
+  background-color: #0056b3;
+}
+
+.pagination-button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.page-info {
+  font-size: 1rem;
+  color: #333;
+}
+
+.total-results {
+  font-size: 1rem;
+  color: #333;
+}
+
+.no-results {
+  text-align: center;
+  font-size: 1.5rem;
   color: #666;
 }
 

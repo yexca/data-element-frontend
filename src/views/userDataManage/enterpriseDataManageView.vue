@@ -243,6 +243,12 @@ export default {
     };
   },
   created(){
+    // 判断vuex是否有enterpriseUserId
+    if(this.$store.state.enterpriseUserId != null){
+      this.queryParams.userId = this.$store.state.enterpriseUserId;
+      this.$store.commit('setentErpriseUserId', 'null');
+      this.showAdditionalFieldsFlag = true;
+    }
     this.fetchList();
     // this.tableWidth = document.body.clientWidth - 250;
   },

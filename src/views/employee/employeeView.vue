@@ -74,17 +74,17 @@
         </el-table-column>
         <el-table-column prop="nickname" label="昵称" width="100" sortable>
         </el-table-column>
-        <el-table-column prop="email" label="邮箱" width="170">
-        </el-table-column>
-        <el-table-column prop="phone" label="手机号" width="150">
+        <el-table-column prop="roleName" label="角色" width="100">
         </el-table-column>
         <el-table-column prop="gender" label="性别" width="50" align="center">
         </el-table-column>
         <el-table-column prop="countryName" label="国家或地区" width="100" align="center">
         </el-table-column>
-        <el-table-column prop="nin" label="身份证" width="170">
+        <el-table-column prop="email" label="邮箱" width="170">
         </el-table-column>
-        <el-table-column prop="roleName" label="角色" width="100">
+        <el-table-column prop="phone" label="手机号" width="150">
+        </el-table-column>
+        <el-table-column prop="nin" label="身份证" width="170">
         </el-table-column>
         <el-table-column prop="status" label="状态" width="80" fixed="right" align="center">
           <template slot-scope="scope">

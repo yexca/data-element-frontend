@@ -236,6 +236,12 @@ export default {
     };
   },
   created(){
+    // 判断vuex是否有personalUserId
+    if(this.$store.state.personalUserId != null){
+      this.queryParams.userId = this.$store.state.personalUserId;
+      this.$store.commit('setPersonalUserId', 'null');
+      this.showAdditionalFieldsFlag = true;
+    }
     this.fetchList();
     // this.tableWidth = document.body.clientWidth - 250;
   },

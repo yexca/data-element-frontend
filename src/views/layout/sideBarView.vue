@@ -1,6 +1,5 @@
 <template>
   <el-menu
-    v-if="role == 0"
     default-active="/admin/dashboard"
     class="el-menu-vertical-demo"
     @open="handleOpen"
@@ -8,12 +7,12 @@
     :collapse="isCollapse"
     router
   >
-  <el-menu-item index="/admin/dashboard">
+    <el-menu-item index="/admin/dashboard">
       <i class="el-icon-menu"></i>
       <span slot="title">dashboard</span>
     </el-menu-item>
 
-    <el-menu-item index="/admin/employee">
+    <el-menu-item index="/admin/employee" v-if="role == 0 || role == 1">
       <i class="el-icon-user"></i>
       <span slot="title">员工管理</span>
     </el-menu-item>
@@ -43,7 +42,7 @@
       </template>
       <el-menu-item index="/admin/info/country">国家信息</el-menu-item>
       <el-menu-item index="/admin/info/category">分类信息</el-menu-item>
-      <el-menu-item index="/admin/info/role">角色信息</el-menu-item>
+      <!-- <el-menu-item index="/admin/info/role">角色信息</el-menu-item> -->
     </el-submenu>
 
     <el-menu-item index="/test">

@@ -100,16 +100,22 @@
             >
             <el-button
               size="mini"
+              icon="el-icon-search"
+              @click="handleDataSearch(scope.row)"
+              ></el-button
+            >
+            <el-button
+              size="mini"
               icon="el-icon-edit"
               @click="handleUpdate(scope.row)"
-              >修改</el-button
+              ></el-button
             >
             <el-button
               type="danger"
               size="mini"
               icon="el-icon-delete"
               @click="handleDelete(scope.row)"
-              >删除</el-button
+              ></el-button
             >
           </template>
         </el-table-column>
@@ -371,6 +377,12 @@ export default {
     // 右侧抽屉内容重置
     resetForm() {
       this.reset();
+    },
+    // 查看当前用户数据
+    handleDataSearch(row){
+      const userId = row.userId;
+      this.$store.commit('setentErpriseUserId', userId);
+      this.$router.push('/admin/data/enterprise')
     },
     // 修改按钮操作
     handleUpdate(row) {
