@@ -1,5 +1,6 @@
 <template>
   <el-menu
+    v-if="role == 0"
     default-active="/"
     class="el-menu-vertical-demo"
     @open="handleOpen"
@@ -41,6 +42,7 @@
         <span slot="title">信息管理</span>
       </template>
       <el-menu-item index="/info/country">国家信息</el-menu-item>
+      <el-menu-item index="/info/category">分类信息</el-menu-item>
       <el-menu-item index="/info/role">角色信息</el-menu-item>
     </el-submenu>
 
@@ -57,7 +59,12 @@ export default {
   data() {
     return {
       isCollapse: false,
+      role: null
     };
+  },
+  created(){
+    this.role = localStorage.getItem("role");
+    // console.log(this.role)
   },
   methods: {
     handleOpen(key, keyPath) {

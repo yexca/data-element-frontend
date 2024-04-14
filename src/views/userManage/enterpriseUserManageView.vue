@@ -139,12 +139,7 @@
           <el-input v-model="form.username" placeholder="请输入用户名" />
         </el-form-item>
         <el-form-item label="密码" prop="password">
-          <el-input
-            v-model="form.password"
-            type="password"
-            show-password
-            placeholder="请输入密码"
-          />
+          <el-input v-model="form.password" type="password" show-password placeholder="请输入密码"/>
         </el-form-item>
         <el-form-item label="确认密码" prop="checkPassword">
           <el-input v-model="form.checkPassword" placeholder="请再次输入密码"></el-input>
@@ -158,9 +153,29 @@
         <el-form-item label="电话号码" prop="phone">
           <el-input v-model="form.phone" placeholder="请输入电话号码" />
         </el-form-item>
-        <el-form-item label="企业证明" prop="evidence">
+        <el-form-item label="企业证明" prop="evidenceType">
+          <el-radio-group v-model="form.evidenceType">
+            <el-radio :label="0">输入链接</el-radio>
+            <el-radio :label="1">上传文件</el-radio>
+          </el-radio-group>
+        </el-form-item>
+        <el-form-item label="输入链接" prop="evidence" v-show="form.evidenceType === 0">
           <el-input v-model="form.evidence" placeholder="请输入企业证明" />
         </el-form-item>
+        <el-form-item label="上传文件" prop="evidence" v-show="form.evidenceType === 1">
+          <el-upload
+            class="upload-demo"
+            :file-list="fileList"
+            :http-request="customUpload"
+            :before-upload="beforeUpload"
+            :before-remove="beforeRemove"
+            :limit="1"
+          >
+            <el-button size="small" type="primary">点击上传</el-button>
+            <div slot="tip" class="el-upload__tip">文件大小不超过 10MB</div>
+          </el-upload>
+        </el-form-item>
+        
 
         <!-- 国家或地区选择 -->
         <el-form-item label="国家或地区" prop="countryId">
@@ -187,6 +202,7 @@
 <script>
 import { listEnterpriseUser, getEnterpriseUser, addEnterpriseUser, updateEnterpriseUser, delEnterpriseUser } from '@/api/enterpriseUser';
 import { listCountry } from "@/api/country";
+import { upload } from '@/api/common'
 export default {
   data() {
     // 密码确认--开始
@@ -213,6 +229,8 @@ export default {
     return {
       // 展示更多搜索框
       showAdditionalFieldsFlag: false,
+      // 上传文件列表
+      fileList: [],
       loading: true,
       queryParams: {
         page: 1,
@@ -261,6 +279,9 @@ export default {
         ],
         phone: [
           { pattern: /^\d{6,11}$/, message: '电话号码必须为数字且为 6-11 位数字', trigger: 'blur'}
+        ],
+        evidenceType: [
+          {required: true, message: '请选择提交证明材料方式', trigger: 'blur'}
         ],
         evidence: [
           {required: true, message: '请输入企业证明', trigger: 'blur'},
@@ -318,8 +339,10 @@ export default {
         phone: null,
         countryId: null,
         status: null,
+        evidenceType: 0, // 证明方式，默认链接
         evidence: null
       };
+      this.fileList = [];
     },
     // 右侧抽屉取消
     cancel() {
@@ -336,6 +359,8 @@ export default {
       const userId = row.userId;
       getEnterpriseUser(userId).then((res) => {
         this.form = res.data.data;
+        //证明材料
+        this.form.evidenceType = 0
         // console.log(this.form)
         // 显示右侧抽屉
         this.dialogTitle = "修改企业用户信息";
@@ -408,6 +433,38 @@ export default {
         // 重新获取列表
         this.fetchList();
       });
+    },
+    // 上传文件
+    customUpload(file){
+      upload(file).then(res => {
+        this.$notify({
+          title: '成功',
+          message: '上传成功',
+          type: 'success',
+          duration: 1000
+        })
+        console.log(res.data.data);
+        this.form.evidence = res.data.data;
+      })
+    },
+    // 上传文件前
+    // beforeUpload(file){
+    beforeUpload(){
+      this.$notify({
+        title: '消息',
+        message: '文件上传中',
+        duration: 1000
+      })
+    },
+    // 在移除文件前
+    // beforeRemove(file, fileList){
+    beforeRemove(){
+      this.$notify({
+        title: '警告',
+        message: '暂时无法移除，如需更改请通过修改功能',
+        type: 'warning',
+        duration: 1500
+      })
     }
   },
 }

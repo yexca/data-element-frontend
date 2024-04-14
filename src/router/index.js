@@ -6,15 +6,25 @@ Vue.use(VueRouter)
 
 const routes = [
   {
-    path: '/login',
-    name: 'login',
+    path: '/admin/login',
+    name: 'adminLogin',
     component: () => import( '../views/login/loginView.vue')
+  },
+  {
+    path: '/login',
+    name: 'userLogin',
+    component: () => import( '../views/login/userLoginView.vue')
+  },
+  {
+    path: '/register',
+    name: 'useRegister',
+    component: () => import( '../views/login/userRegisterView.vue')
   },
   {
     path: '/',
     name: 'layout',
     component: layoutView,
-    redirect: '/login',
+    redirect: '/search',
     children:[
       {
         path: '/dashboard',
@@ -57,6 +67,12 @@ const routes = [
         name: 'countryManage',
         component: () => import('../views/infoManage/countryView.vue')
       },
+      // 分类信息管理
+      {
+        path: '/info/category',
+        name: 'categoryManage',
+        component: () => import('../views/infoManage/categoryView.vue')
+      },
       // 角色信息管理
       {
         path: '/info/role',
@@ -70,6 +86,12 @@ const routes = [
         component: () => import('../views/test/testView.vue')
       }
     ]
+  },
+  // 搜索界面
+  {
+    path: '/search',
+    name: 'search',
+    component: () => import('../views/search/searchView.vue')
   },
   {
     path: '/404',

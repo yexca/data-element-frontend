@@ -1,45 +1,83 @@
 <template>
-  <div>
-    用户名
-    <el-input v-model="loginForm.username" style="width: 100px;"></el-input>
-    密码
-    <el-input v-model="loginForm.password" style="width: 100px;"></el-input>
-    <el-button @click="handleLogin" type="primary">登录</el-button>
+  <div class="login-container">
+    <el-form ref="loginForm" @submit.native.prevent="handleLogin" class="form">
+      <h2 class="title">员工登录</h2>
+      <el-form-item label="用户名" label-width="70px">
+        <el-input 
+          v-model="loginForm.username" 
+          placeholder="请输入用户名" 
+          @keyup.enter.native="handleLogin"
+        ></el-input>
+      </el-form-item>
+      <el-form-item label="密码" label-width="70px">
+        <el-input 
+          v-model="loginForm.password" 
+          type="password" 
+          placeholder="请输入密码" 
+          @keyup.enter.native="handleLogin"
+        ></el-input>
+      </el-form-item>
+      <el-button type="primary" @click="handleLogin" round>登录</el-button>
+    </el-form>
   </div>
 </template>
 
 <script>
-import {empLogin} from '@/api/employee'
+import { empLogin } from '@/api/employee';
 import router from '@/router';
-
-// import request from '@/utils/request'
-// import axios from 'axios'
-
 
 export default {
   data() {
     return {
       loginForm: {
-        username: 'yexca',
-        password: '123456'
+        username: '',
+        password: ''
       }
-    }
+    };
   },
   methods: {
-    handleLogin(){
+    handleLogin() {
+      if (!this.loginForm.username || !this.loginForm.password) {
+        this.$message.error('用户名和密码不能为空');
+        return;
+      }
       empLogin(this.loginForm).then(res => {
-        // console.log(res.data.data.token);
+        localStorage.setItem('role', res.data.data.role);
         localStorage.setItem('token', res.data.data.token);
-        router.push('/dashboard')
-      })
-      // axios.post("/api/admin/employee/login", this.loginForm).then(res => {
-      //   console.log(res.data)
-      // })
+        router.push('/dashboard');
+      }).catch(error => {
+        this.$message.error('登录失败: ' + error.message);
+      });
     }
   }
 }
 </script>
 
-<style>
+<style scoped>
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: url('@/static/pic/1675998580122.jpg');
+  background-size: cover;
+  background-position: center;
+}
 
+.form {
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.75);
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 300px;
+}
+
+.title {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.el-form-item {
+  margin-bottom: 16px; /* Ensure adequate spacing between form items */
+}
 </style>
