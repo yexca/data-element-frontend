@@ -7,6 +7,7 @@
           v-model="loginForm.username" 
           placeholder="请输入用户名" 
           @keyup.enter.native="handleLogin"
+          clearable
         ></el-input>
       </el-form-item>
       <el-form-item label="密码" label-width="70px">
@@ -15,6 +16,8 @@
           type="password" 
           placeholder="请输入密码" 
           @keyup.enter.native="handleLogin"
+          show-password
+          clearable
         ></el-input>
       </el-form-item>
       <el-button type="primary" @click="handleLogin" round>登录</el-button>
@@ -44,7 +47,7 @@ export default {
         // 假设登录成功后后端会返回一个token和用户角色信息
         localStorage.setItem('role', res.data.data.role);
         localStorage.setItem('token', res.data.data.token);
-
+        this.$message.success('登录成功！');
         // 检查是否有重定向的目标页面，如果有，登录后跳转到该页面
         const redirect = this.$route.query.redirect || '/admin/dashboard'; // 如果没有指定重定向页面，默认跳转到管理仪表板
         this.$router.push(redirect);

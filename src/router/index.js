@@ -100,6 +100,13 @@ const routes = [
       }
     ]
   },
+  // 个人用户视图
+  {
+    path: '/user/personal/:userId',
+    name: 'PersonalView',
+    component: () => import('../views/userView/personalUserView.vue'),
+    props: true // 启用props将路由参数传递给组件
+  },
   {
     path: '/404',
     name: '404',
@@ -120,7 +127,11 @@ const router = new VueRouter({
 router.beforeEach((to, from, next) => {
   const token = localStorage.getItem('token');
 
+  // const path = to.path;
+  // console.log(typeof path)
+
   if (to.path.startsWith('/admin')) {  // 检查是否访问管理端路径
+    // console.log("访问管理端路径")
     if (!token) {
       // 如果没有token，重定向到登录页面，并保存当前路径以便登录后可以返回
       next({
@@ -130,7 +141,19 @@ router.beforeEach((to, from, next) => {
     } else {
       next();  // 如果有token，正常进入页面
     }
-  } else {
+  } else if(to.path.startsWith('/user')){
+    // console.log("访问用户端路径")
+    if (!token) {
+      // 如果没有token，重定向到登录页面，并保存当前路径以便登录后可以返回
+      next({
+        path: '/login',
+        query: { redirect: to.fullPath }  // 将当前路径作为参数，登录后可以使用
+      });
+    } else {
+      next();  // 如果有token，正常进入页面
+    }
+  }else {
+    // console.log("访问其他路径")
     next();  // 对于非管理端路径，正常进入页面
   }
 });

@@ -105,9 +105,12 @@ service.interceptors.response.use(
           break;
         case 401:
           // 避免在登录页面重复跳转
-          if (router.currentRoute.path !== '/admin/login'){
+          if (router.currentRoute.path.startsWith('/admin') && router.currentRoute.path != '/admin/login' ){
             Message.error('未授权或登录失效，请重新登录');
-            router.push('/admin/login');
+            router.replace('/admin/login');
+          } else if(router.currentRoute.path.startsWith('/user') && router.currentRoute.path != '/login'){
+            Message.error('未授权或登录失效，请重新登录');
+            router.push('/login');
           }
           break;
         case 403:

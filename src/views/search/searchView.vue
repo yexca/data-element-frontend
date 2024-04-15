@@ -1,57 +1,62 @@
 <template>
   <div class="main-container">
     <div class="overlay" v-show="isActive || isLoading"></div>
-    <div class="search-container" :class="{ 'top-search': searchPerformed }">
-      <div class="search-box-container">
-        <input
-          class="search-box"
-          ref="searchInput"
-          v-model="searchQuery"
-          @keyup.enter="performSearch"
-          @focus="isActive = true"
-          @blur="isActive = false"
-          placeholder="按空格键开始搜索"
-        />
-        <button @click="performSearch" class="search-button">搜索</button>
-      </div>
-      <div v-if="isLoading" class="loading">正在加载...</div>
-      <div v-if="searchPerformed">
-        <div v-if="searchResults.length" class="results-container">
-          <div v-for="item in paginatedResults" :key="item.dataId" @click="navigate(item)" class="result-item">
-            <h3 v-html="highlightText(item.name)" target="_blank"></h3>
-            <p v-html="highlightText(item.description)" target="_blank"></p>
-            <div class="additional-info">
-              <span>用户名: {{ item.username }}</span> |
-              <span>分类: {{ item.categoryName || '未分类' }}</span> |
-              <span>创建时间: {{ item.createTime }}</span> |
-              <span>修改时间: {{ item.updateTime }}</span>
+    <div class="search-and-details-container">
+      <div class="search-container" :class="{ 'top-search': searchPerformed }">
+        <!-- 现有的搜索框和结果列表 -->
+        <div class="search-box-container">
+          <input
+            class="search-box"
+            ref="searchInput"
+            v-model="searchQuery"
+            @keyup.enter="performSearch"
+            @focus="isActive = true"
+            @blur="isActive = false"
+            placeholder="按空格键开始搜索"
+          />
+          <button @click="performSearch" class="search-button">搜索</button>
+        </div>
+        <div v-if="isLoading" class="loading">正在加载...</div>
+        <div v-if="searchPerformed">
+          <div v-if="searchResults.length" class="results-container">
+            <div v-for="item in paginatedResults" :key="item.dataId" @click="selectItem(item)" class="result-item">
+              <h3 v-html="highlightText(item.name)"></h3>
+              <p v-html="highlightText(item.description)"></p>
+              <div class="additional-info">
+                <span>用户名: {{ item.username }}</span> |
+                <span>分类: {{ item.categoryName || '未分类' }}</span> |
+                <span>创建时间: {{ item.createTime }}</span> |
+                <span>修改时间: {{ item.updateTime }}</span>
+              </div>
             </div>
+            <pagination-controls :current-page="currentPage" :total-pages="totalPages" @change-page="changePage" />
           </div>
-          <div class="pagination-container">
-            <div class="pagination">
-              <button @click="previousPage" :disabled="currentPage <= 1" class="pagination-button">上一页</button>
-              <span class="page-info">{{ currentPage }} / {{ totalPages }}</span>
-              <button @click="nextPage" :disabled="currentPage >= totalPages" class="pagination-button">下一页</button>
-            </div>
-            <div class="total-results">总结果数: {{ totalResults }}</div>
+          <div v-else class="results-container no-results">
+            <div class="result-item">没有找到结果</div>
           </div>
         </div>
-        <div v-else class="results-container no-results">
-          <div class="result-item">没有找到结果</div>
-        </div>
       </div>
-      <div class="auth-buttons">
-        <button @click="login" class="auth-button">登录</button>
-        <button @click="register" class="auth-button">注册</button>
+      <div class="details-container" v-if="selectedItem">
+        <h2>{{ selectedItem.name }}</h2>
+        <p>{{ selectedItem.description }}</p>
+        <p>用户名: <router-link :to="'/user/personal/' + selectedItem.userId">{{ selectedItem.username }}</router-link></p>
+        <p>分类: <router-link :to="'/category/' + selectedItem.categoryId">{{ selectedItem.categoryName }}</router-link></p>
+        <p>状态: {{ selectedItem.status }}</p>
+        <p>文件链接: <a :href="selectedItem.fileLink" target="_blank">{{ selectedItem.fileLink }}</a></p>
+        <img v-if="isImage(selectedItem.fileLink)" :src="selectedItem.fileLink" class="image-preview" />
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { search } from '@/api/search'
+import { search } from '@/api/search';
+import PaginationControls from '@/components/PaginationControls';
 
 export default {
+  components: {
+    PaginationControls
+  },
   data() {
     return {
       searchQuery: '',
@@ -61,7 +66,8 @@ export default {
       searchPerformed: false,
       totalResults: 0,
       currentPage: 1,
-      resultsPerPage: 10
+      resultsPerPage: 10,
+      selectedItem: null
     };
   },
   computed: {
@@ -131,6 +137,15 @@ export default {
       if (this.currentPage > 1) {
         this.currentPage--;
       }
+    },
+    selectItem(item) {
+      this.selectedItem = item;
+    },
+    isImage(link) {
+      return /\.(jpeg|jpg|gif|png)$/.test(link);
+    },
+    changePage(newPage) {
+      this.currentPage = newPage;
     }
   }
 }
@@ -138,6 +153,15 @@ export default {
 
 
 <style scoped>
+.details-container {
+  background: rgba(255, 255, 255, 0.9);
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  width: 300px; /* Adjust width as needed */
+  overflow-y: auto; /* Enable scrolling if content is long */
+}
+
 .main-container {
   background-image: url('@/static/pic/104578537_p0.png');
   background-size: cover;
