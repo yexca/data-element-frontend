@@ -14,7 +14,7 @@ const service = axios.create({
 service.interceptors.request.use(
   (config) => {
     // 定义需要token验证的路径白名单
-    const whitelist = ['/', '/search', '/login', '/admin/login'];
+    const whitelist = ['/', '/search', '/user/users/personal/login', '/user/users/personal/register', '/user/users/enterprise/login', '/user/users/enterprise/register', '/admin/login'];
     // 检查当前请求的路径是否在白名单中
     // const isWhitelisted = whitelist.some(path => config.url.includes(path));
     const isWhitelisted = whitelist.indexOf(config.url) !== -1;

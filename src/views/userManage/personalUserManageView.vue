@@ -212,7 +212,7 @@
 
 <script>
 import { listPersonalUser, getPersonalUser, addPersonalUser, updatePersonalUser, delPersonalUser } from '@/api/PersonalUser';
-import { listAllCountry } from "@/api/country";
+import { listAllCountry } from '@/api/country';
 export default {
   data() {
     // 密码确认--开始

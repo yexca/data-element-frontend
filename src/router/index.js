@@ -107,6 +107,13 @@ const routes = [
     component: () => import('../views/userView/personalUserView.vue'),
     props: true // 启用props将路由参数传递给组件
   },
+  // 企业用户视图
+  {
+    path: '/user/enterprise/:userId',
+    name: 'EnterpriseView',
+    component: () => import('../views/userView/enterpriseUserView.vue'),
+    props: true // 启用props将路由参数传递给组件
+  },
   {
     path: '/404',
     name: '404',
@@ -121,6 +128,7 @@ const routes = [
 ]
 
 const router = new VueRouter({
+  mode: 'history',
   routes
 })
 

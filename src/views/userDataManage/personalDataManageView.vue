@@ -183,7 +183,7 @@
 <script>
 import { listPersonalData, getPersonalData, addPersonalData, updatePersonalData, delPersonalData } from '@/api/personalData';
 import { listAllCategory } from '@/api/category';
-import { upload, deleteFile } from '@/api/file'
+import { upload, deleteFile } from '@/api/file';
 export default {
   data() {
     return {
@@ -335,6 +335,7 @@ export default {
           type: 'success'
         });
       });
+      this.fetchList();
     },
     // 弹窗提交按钮
     submitForm() {

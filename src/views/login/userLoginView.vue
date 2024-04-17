@@ -48,6 +48,7 @@ methods: {
         // 假设登录成功后后端会返回一个token和用户角色信息
         localStorage.setItem('role', res.data.data.role);
         localStorage.setItem('token', res.data.data.token);
+        localStorage.setItem('userId', res.data.data.userId);
         this.$message.success('登录成功！');
         // 检查是否有重定向的目标页面，如果有，登录后跳转到该页面
         const redirect = this.$route.query.redirect || '/user/personal/' + res.data.data.userId; // 如果没有指定重定向页面，默认跳转到管理仪表板
@@ -65,6 +66,7 @@ methods: {
         // 假设登录成功后后端会返回一个token和用户角色信息
         localStorage.setItem('role', res.data.data.role);
         localStorage.setItem('token', res.data.data.token);
+        localStorage.setItem('userId', res.data.data.userId);
         this.$message.success('登录成功！');
         // 检查是否有重定向的目标页面，如果有，登录后跳转到该页面
         const redirect = this.$route.query.redirect || '/user/enterprise/' + res.data.data.userId; // 如果没有指定重定向页面，默认跳转到管理仪表板

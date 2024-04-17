@@ -343,6 +343,7 @@ export default {
           type: 'success'
         });
       });
+      this.fetchList();
     },
     // 弹窗提交按钮
     submitForm() {
