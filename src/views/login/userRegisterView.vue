@@ -284,7 +284,11 @@
     created(){
       // 获取国家或地区信息
       listAllCountry().then((res) => {
-        this.countries = res.data.data;
+        if(res && res.data && res.data.data){
+          this.countries = res.data.data;
+        }else{
+          return;
+        }
       });
     },
     methods: {

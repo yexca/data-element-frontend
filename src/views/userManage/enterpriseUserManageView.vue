@@ -324,15 +324,23 @@ export default {
   mounted(){
     // 获取国家或地区信息
     listAllCountry().then(res => {
-      this.countries = res.data.data;
+      if(res && res.data && res.data.data){
+        this.countries = res.data.data;
+      }else{
+        return;
+      }
     })
   },
   methods: {
     fetchList() {
       this.loading = true;
       listEnterpriseUser(this.queryParams).then((res) => {
-        this.tableData = res.data.data.records;
-        this.total = res.data.data.total;
+        if(res && res.data && res.data.data){
+          this.tableData = res.data.data.records;
+          this.total = res.data.data.total;
+        }else{
+          return;
+        }
         this.loading = false;
       });
     },

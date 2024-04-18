@@ -185,8 +185,7 @@ export default {
           this.tableData = res.data.data.records;
           this.total = res.data.data.total;
         }else{
-          this.tableData = [];
-          this.total = null;
+          return;
         }
         this.loading = false;
       });

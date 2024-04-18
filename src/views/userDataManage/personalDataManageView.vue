@@ -248,7 +248,11 @@ export default {
   mounted(){
     // 获取分类信息
     listAllCategory().then(res => {
-      this.categories = res.data.data;
+      if(res && res.data && res.data.data){
+        this.categories = res.data.data;
+      }else{
+        return;
+      }
       // console.log(this.categories)
     })
   },
@@ -256,8 +260,12 @@ export default {
     fetchList() {
       this.loading = true;
       listPersonalData(this.queryParams).then((res) => {
-        this.tableData = res.data.data.records;
-        this.total = res.data.data.total;
+        if(res && res.data && res.data.data){
+          this.tableData = res.data.data.records;
+          this.total = res.data.data.total;
+        }else{
+          return;
+        }
         this.loading = false;
       });
     },

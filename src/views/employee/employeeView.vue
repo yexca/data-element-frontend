@@ -341,7 +341,7 @@ export default {
       if(res && res.data && res.data.data){
         this.countries = res.data.data;
       }else{
-        this.countries = [];
+        return;
       }
     });
   },
@@ -353,8 +353,7 @@ export default {
           this.tableData = res.data.data.records;
           this.total = res.data.data.total;
         }else{
-          this.tableData = [];
-          this.total = null;
+          return;
         }
         this.loading = false;
       });
