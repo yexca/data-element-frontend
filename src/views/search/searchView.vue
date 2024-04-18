@@ -83,9 +83,12 @@
           <div class="result-item">没有找到结果</div>
         </div>
       </div>
-      <div class="auth-buttons">
+      <div class="auth-buttons" v-if="!loginFlag">
         <button @click="login" class="auth-button">登录</button>
         <button @click="register" class="auth-button">注册</button>
+      </div>
+      <div class="auth-buttons" v-else>
+        <button @click="logout" class="auth-button">登出</button>
       </div>
     </div>
     
@@ -109,7 +112,8 @@ export default {
       resultsPerPage: 10,
       selectedItem: null,
       drawer: false,
-      userRole: null
+      userRole: null,
+      // loginFlag: false
     };
   },
   computed: {
@@ -119,6 +123,14 @@ export default {
     paginatedResults() {
       const start = (this.currentPage - 1) * this.resultsPerPage;
       return this.searchResults.slice(start, start + this.resultsPerPage);
+    },
+    loginFlag(){
+      const token = localStorage.getItem('token');
+      if(token != null){
+        return true;
+      }else{
+        return false;
+      }
     }
   },
   mounted() {
@@ -129,10 +141,21 @@ export default {
   },
   methods: {
     login() {
-      this.$router.push('/login');
+      this.$router.push({
+        path: '/login',
+        query: {redirect: '/search'}
+      });
     },
     register() {
-      this.$router.push('/register');
+      this.$router.push({
+        path: '/register',
+        query: {redirect: '/search'}
+      });
+    },
+    logout() {
+      localStorage.removeItem('token');
+      this.$message.success('登出成功');
+      this.$router.go(0);
     },
     async performSearch() {
       if (!this.searchQuery) return;

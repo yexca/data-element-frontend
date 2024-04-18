@@ -93,11 +93,11 @@ const routes = [
       //   component: () => import('../views/infoManage/roleView.vue')
       // },
       // 测试
-      {
-        path: '/test',
-        name: 'test',
-        component: () => import('../views/test/testView.vue')
-      }
+      // {
+      //   path: '/test',
+      //   name: 'test',
+      //   component: () => import('../views/test/testView.vue')
+      // }
     ]
   },
   // 个人用户视图
@@ -133,14 +133,17 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  const token = localStorage.getItem('token');
+  // const token = localStorage.getItem('token');
 
   // const path = to.path;
   // console.log(typeof path)
 
   if (to.path.startsWith('/admin')) {  // 检查是否访问管理端路径
+    const token = localStorage.getItem('adminToken');
     // console.log("访问管理端路径")
-    if (!token) {
+    if (to.path == '/admin/login'){
+      next();
+    }else if (!token) {
       // 如果没有token，重定向到登录页面，并保存当前路径以便登录后可以返回
       next({
         path: '/admin/login',
@@ -150,6 +153,7 @@ router.beforeEach((to, from, next) => {
       next();  // 如果有token，正常进入页面
     }
   } else if(to.path.startsWith('/user')){
+    const token = localStorage.getItem('token');
     // console.log("访问用户端路径")
     if (!token) {
       // 如果没有token，重定向到登录页面，并保存当前路径以便登录后可以返回

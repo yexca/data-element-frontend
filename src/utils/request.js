@@ -14,7 +14,7 @@ const service = axios.create({
 service.interceptors.request.use(
   (config) => {
     // 定义需要token验证的路径白名单
-    const whitelist = ['/', '/search', '/user/users/personal/login', '/user/users/personal/register', '/user/users/enterprise/login', '/user/users/enterprise/register', '/admin/login'];
+    const whitelist = ['/', '/search', '/user/users/personal/login', '/user/users/personal/register', '/user/users/enterprise/login', '/user/users/enterprise/register', '/admin/employee/login'];
     // 检查当前请求的路径是否在白名单中
     // const isWhitelisted = whitelist.some(path => config.url.includes(path));
     const isWhitelisted = whitelist.indexOf(config.url) !== -1;
@@ -23,19 +23,33 @@ service.interceptors.request.use(
     // 如果不在白名单中，则尝试附加token
     if (!isWhitelisted) {
       // console.log("不在白名单")
-      const token = localStorage.getItem('token');
-      if(token){
-        // console.log("设置token")
-        config.headers['token'] = token;
-      } else {
-        // console.log("没有token")
-        // 根据路径判断应重定向到的登录页面
-        const loginPath = config.url.startsWith('/admin') ? '/admin/login' : '/login';
-        Message.error('未授权或登录失效，请重新登录');
-        router.push(loginPath);
-        return Promise.reject({ data: '未登录', config})
+      // 判断是管理端？
+      if(config.url.startsWith('/admin')){
+        const token = localStorage.getItem('adminToken');
+        if(token){
+          // console.log("设置token")
+          config.headers['token'] = token;
+        } else {
+          // console.log("没有token")
+          // 根据路径判断应重定向到的登录页面
+          // const loginPath = config.url.startsWith('/admin') ? '/admin/login' : '/login';
+          Message.error('未授权或登录失效，请重新登录');
+          router.push('/admin/login');
+          return Promise.reject({ data: '未登录', config})
+        }
+        return config;
+      }else {
+        const token = localStorage.getItem('token');
+        if(token){
+          config.headers['token'] = token;
+        }else{
+          Message.error('未授权或登录失效，请重新登录');
+          router.push('/login');
+          return Promise.reject({ data: '未登录', config})
+        }
+        return config;
       }
-      return config
+      
     }else{
       return config
     }

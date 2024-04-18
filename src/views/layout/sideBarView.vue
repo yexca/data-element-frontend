@@ -45,10 +45,10 @@
       <!-- <el-menu-item index="/admin/info/role">角色信息</el-menu-item> -->
     </el-submenu>
 
-    <el-menu-item index="/test">
+    <!-- <el-menu-item index="/test">
       <i class="el-icon-menu"></i>
       <span slot="title">测试</span>
-    </el-menu-item>
+    </el-menu-item> -->
 
   </el-menu>
 </template>
@@ -62,7 +62,7 @@ export default {
     };
   },
   created(){
-    this.role = localStorage.getItem("role");
+    this.role = localStorage.getItem("adminRole");
     // console.log(this.role)
   },
   methods: {
