@@ -52,12 +52,12 @@
     </el-card>
 
     <!-- 个人信息修改弹窗 -->
-    <el-dialog title="修改个人信息" :visible.sync="openDialog">
+    <el-dialog title="修改个人信息" width="30%" :visible.sync="openDialog" >
       <el-form
         ref="userForm"
         :model="userForm"
         :rules="userRules"
-        label-width="80px"
+        label-width="100px"
       >
         <el-form-item label="用户名" prop="username">
           <el-input v-model="userForm.username" placeholder="请输入用户名" />
@@ -134,7 +134,7 @@
       <!-- 表格和相关操作按钮放在这里 -->
       <div class="content-main">
         <!-- 表格主体 -->
-        <el-table :data="tableData" v-loading="loading" stripe>
+        <el-table :data="tableData" v-loading="loading" stripe >
           <el-table-column
             prop="dataId"
             label="ID"
@@ -353,7 +353,7 @@ export default {
     // 密码确认--结束
     return {
       userInfo: null,
-      userForm: null,
+      userForm: {},
       // 个人数据
       loading: true,
       queryParams: {
@@ -483,7 +483,7 @@ export default {
       // 检查当前用户
       this.checkCurrentUser();
       // 获取当前登录用户个人信息
-      this.fetchCurrentUser();
+      // this.fetchCurrentUser();
     },
     fetchUser() {
       getPersonalUser(this.userId).then((res) => {
@@ -723,6 +723,7 @@ export default {
     },
     // 修改个人信息
     handleUpdateUserInfo() {
+      this.fetchCurrentUser();
       this.openDialog = true;
     },
     submitUserForm() {
@@ -756,20 +757,31 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 20px;
+  padding-top: 20px;
+  background-image: url('@/static/pic/104578537_p0.png');
+  background-size: cover;
+  background-attachment: fixed;  /* 确保背景图片固定 */
+  min-height: 100vh;
 }
 
 .info-card {
   width: 100%;
   max-width: 800px; /* 适当调整宽度 */
   margin-bottom: 20px;
+  background: rgba(255, 255, 255, 0.8);
 }
 
 .crud-table {
   width: 100%;
   max-width: 1000px; /* 适当调整宽度 */
   margin-bottom: 20px;
+  background: rgba(255, 255, 255, 0.8);
 }
+
+.el-table,
+    .el-table__expanded-cell {
+        background-color: #3f5c6d2c;
+    }
 
 .header {
   font-size: 20px;

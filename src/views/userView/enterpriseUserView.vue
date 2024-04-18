@@ -363,7 +363,7 @@
       // 密码确认--结束
       return {
         userInfo: null,
-        userForm: null,
+        userForm: {},
         // 个人数据
         loading: true,
         queryParams: {
@@ -468,7 +468,7 @@
       // 检查当前用户
       this.checkCurrentUser();
       // 获取当前登录用户个人信息
-      this.fetchCurrentUser();
+      // this.fetchCurrentUser();
     },
     mounted() {
       // 获取分类信息
@@ -720,6 +720,7 @@
       },
       // 修改个人信息
       handleUpdateUserInfo() {
+        this.fetchCurrentUser();
         this.openDialog = true;
       },
       submitUserForm() {
@@ -753,7 +754,11 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 20px;
+    padding-top: 20px;
+    background-image: url('@/static/pic/104578537_p0.png');
+    background-size: cover;
+    background-attachment: fixed;  /* 确保背景图片固定 */
+    min-height: 100vh;
   }
   
   .info-card {
