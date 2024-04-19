@@ -168,7 +168,7 @@
   </template>
   
   <script>
-  import { listAllCountry } from "@/api/userCountry";
+  import { listAllCountry } from "@/api/commonCountry";
   import { personalUserRegister, enterpriseUserRegister } from '@/api/userRegister'
 
   export default {

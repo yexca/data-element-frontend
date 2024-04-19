@@ -13,8 +13,11 @@ const service = axios.create({
 // 请求拦截器
 service.interceptors.request.use(
   (config) => {
+    // 显式设置Content-Type
+    config.headers['Content-Type'] = 'application/json; charset=UTF-8';
+    
     // 定义需要token验证的路径白名单
-    const whitelist = ['/', '/search', '/user/users/personal/login', '/user/users/personal/register', '/user/users/enterprise/login', '/user/users/enterprise/register', '/admin/employee/login'];
+    const whitelist = ['/', '/search', '/country', '/user/users/personal/login', '/user/users/personal/register', '/user/users/enterprise/login', '/user/users/enterprise/register', '/admin/employee/login'];
     // 检查当前请求的路径是否在白名单中
     // const isWhitelisted = whitelist.some(path => config.url.includes(path));
     const isWhitelisted = whitelist.indexOf(config.url) !== -1;
