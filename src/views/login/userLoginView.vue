@@ -88,7 +88,7 @@ display: flex;
 justify-content: center;
 align-items: center;
 height: 100vh;
-background-image: url('@/static/pic/103918972_p2.jpg');
+background-image: url('@/assets/pic/userLogin.png');
 background-size: cover;
 backdrop-filter: blur(10px);
 }

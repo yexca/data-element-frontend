@@ -26,7 +26,7 @@
         <el-divider>个人信息</el-divider>
         <el-col :span="8"><strong>性别:</strong> {{ userInfo.gender }}</el-col>
         <el-col :span="8"
-          ><strong>国家:</strong> {{ userInfo.countryName }}</el-col
+          ><strong>国家或地区:</strong> {{ userInfo.countryName }}</el-col
         >
         <el-col :span="8"><strong>状态:</strong> {{ userInfo.status }}</el-col>
       </el-row>
@@ -770,7 +770,7 @@ export default {
   flex-direction: column;
   align-items: center;
   padding-top: 20px;
-  background-image: url('@/static/pic/104578537_p0.png');
+  background-image: url('@/assets/pic/personal.png');
   background-size: cover;
   background-attachment: fixed;  /* 确保背景图片固定 */
   min-height: 100vh;

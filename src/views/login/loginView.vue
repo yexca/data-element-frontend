@@ -66,7 +66,7 @@ export default {
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background: url('@/static/pic/1675998580122.jpg');
+  background: url('@/assets/pic/adminLogin.png');
   background-size: cover;
   background-position: center;
 }

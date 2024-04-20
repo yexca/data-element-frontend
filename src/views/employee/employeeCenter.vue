@@ -25,7 +25,7 @@
                     </el-form-item>
                 </el-col>
                 <el-col :span="12">
-                    <el-form-item label="密码">
+                    <el-form-item label="密码" v-if="role > 0">
                         <el-input type="password" v-model="userInfo.password" show-password placeholder="不填不更新密码"></el-input>
                     </el-form-item>
                 </el-col>
@@ -99,6 +99,7 @@ import { getMyself, updateEmployee } from '@/api/employee'
         }
       };
       return {
+        role: null,
         userInfo: {
           employeeId: null,
           username: null,
@@ -141,6 +142,9 @@ import { getMyself, updateEmployee } from '@/api/employee'
             const parts = this.userInfo.phone.split(' ');
             return parts[1] || ''; // '155225'
         }
+    },
+    created(){
+        this.role = localStorage.getItem("adminRole");
     },
     mounted(){
         this.fetchProfile();

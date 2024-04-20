@@ -9,7 +9,7 @@
     <div class="layout-container">
       <!-- 基本信息 -->
       <el-card class="info-card" shadow="hover">
-        <div slot="header" class="header">个人用户信息</div>
+        <div slot="header" class="header">企业用户信息</div>
         <el-divider content-position="left">基本信息</el-divider>
         <el-row :gutter="20">
           <el-col :span="8"
@@ -23,9 +23,9 @@
           >
         </el-row>
         <el-row :gutter="20">
-          <el-divider>个人信息</el-divider>
+          <el-divider>其他信息</el-divider>
           <el-col :span="8"
-            ><strong>国家:</strong> {{ userInfo.countryName }}</el-col
+            ><strong>国家或地区:</strong> {{ userInfo.countryName }}</el-col
           >
           <el-col :span="8"><strong>状态:</strong> {{ userInfo.status }}</el-col>
         </el-row>
@@ -135,7 +135,7 @@
   
       <!-- CRUD 操作表格部分 -->
       <el-card class="crud-table">
-        <div slot="header" class="header">用户数据</div>
+        <div slot="header" class="header">企业数据</div>
         <!-- 表格和相关操作按钮放在这里 -->
         <div class="content-main">
           <!-- 表格主体 -->
@@ -767,7 +767,7 @@
     flex-direction: column;
     align-items: center;
     padding-top: 20px;
-    background-image: url('@/static/pic/104578537_p0.png');
+    background-image: url('@/assets/pic/enterprise.png');
     background-size: cover;
     background-attachment: fixed;  /* 确保背景图片固定 */
     min-height: 100vh;
@@ -777,12 +777,14 @@
     width: 100%;
     max-width: 800px; /* 适当调整宽度 */
     margin-bottom: 20px;
+    background: rgba(255, 255, 255, 0.8);
   }
   
   .crud-table {
     width: 100%;
     max-width: 1000px; /* 适当调整宽度 */
     margin-bottom: 20px;
+    background: rgba(255, 255, 255, 0.8);
   }
   
   .header {

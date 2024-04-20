@@ -368,7 +368,7 @@
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background-image: url('@/static/pic/103782674_p1.png');
+    background-image: url('@/assets/pic/userRegister.png');
     background-size: cover;
     backdrop-filter: blur(10px);
   }

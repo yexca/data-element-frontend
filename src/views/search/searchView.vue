@@ -221,7 +221,7 @@ export default {
 
 <style scoped>
 .main-container {
-  background-image: url('@/static/pic/104578537_p0.png');
+  background-image: url('@/assets/pic/search.png');
   background-size: cover;
   background-attachment: fixed;  /* 确保背景图片固定 */
   min-height: 100vh;
