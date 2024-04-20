@@ -12,6 +12,11 @@
       <span slot="title">dashboard</span>
     </el-menu-item>
 
+    <el-menu-item index="/admin/center" v-if="role == 0 || role == 1">
+      <i class="el-icon-user"></i>
+      <span slot="title">个人中心</span>
+    </el-menu-item>
+
     <el-menu-item index="/admin/employee" v-if="role == 0 || role == 1">
       <i class="el-icon-user"></i>
       <span slot="title">员工管理</span>

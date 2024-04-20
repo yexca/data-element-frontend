@@ -44,11 +44,17 @@ const routes = [
         name: 'dashboard',
         component: () => import('../views/dashboard/dashboardView.vue')
       },
+      // 员工个人中心
+      {
+        path: '/admin/center',
+        name: 'employeeCenter',
+        component: () => import('../views/employee/employeeCenter.vue')
+      },
       // 员工管理
       {
         path: '/admin/employee',
         name: 'employee',
-        component: () => import('../views/employee/employeeView.vue')
+        component: () => import('../views/employee/employeeManage.vue')
       },
       // 个人用户管理
       {

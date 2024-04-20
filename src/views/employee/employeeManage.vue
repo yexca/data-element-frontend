@@ -290,7 +290,7 @@ export default {
       // 用于选中的国家或地区ID
       selectedCountryId: null,
       // 表单规则
-      rules :{
+      rules: {
         username: [
           {required: true, message: '请输入用户名', trigger: 'blur'}, // 触发方式为失去焦点
           {pattern: /^[A-Za-z0-9]+$/, message: '用户名只能使用字母和数字', trigger: 'blur'},

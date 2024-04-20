@@ -51,3 +51,11 @@ export function delEmployee(employeeId) {
     method: 'delete'
   })
 }
+
+// 获取个人信息
+export function getMyself() {
+  return request({
+    url: '/admin/employee/my',
+    method: 'get'
+  })
+}
