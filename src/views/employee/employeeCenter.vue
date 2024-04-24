@@ -135,12 +135,22 @@ import { getMyself, updateEmployee } from '@/api/employee'
     },
     computed: {
         phonePrefix() {
-            const parts = this.userInfo.phone.split(' ');
-            return parts[0]; // '+86'
+            if(this.userInfo.phone){
+                const parts = this.userInfo.phone.split(' ');
+                return parts[0]; // '+86'
+            }else{
+                return '';
+            }
+            
         },
         phoneNumber() {
-            const parts = this.userInfo.phone.split(' ');
-            return parts[1] || ''; // '155225'
+            if(this.userInfo.phone){
+                const parts = this.userInfo.phone.split(' ');
+                return parts[1] || ''; // '155225'
+            }else{
+                return '';
+            }
+            
         }
     },
     created(){

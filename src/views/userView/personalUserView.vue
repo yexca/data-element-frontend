@@ -60,7 +60,7 @@
         label-width="100px"
       >
         <el-form-item label="用户名" prop="username">
-          <el-input v-model="userForm.username" placeholder="请输入用户名" />
+          <el-input disabled v-model="userForm.username" placeholder="请输入用户名" />
         </el-form-item>
         <el-form-item label="密码" prop="password">
           <el-input
@@ -122,7 +122,7 @@
       <div class="dialog-footer" slot="footer">
         <el-button type="primary" @click="submitUserForm">确 定</el-button>
         <el-button type="info" @click="resetUserForm">重 置</el-button>
-        <el-button @click="cancelUserForm">取 消</el-button>
+        <el-button @click="cancel">取 消</el-button>
       </div>
     </el-dialog>
 
@@ -253,9 +253,9 @@
         <el-form-item label="数据名" prop="name">
           <el-input v-model="form.name" placeholder="请输入数据名" />
         </el-form-item>
-        <el-form-item label="用户" prop="userId">
+        <!-- <el-form-item label="用户" prop="userId">
           <el-input v-model="form.userId" placeholder="请输入用户ID" />
-        </el-form-item>
+        </el-form-item> -->
         <el-form-item label="描述" prop="description">
           <el-input type="textarea" v-model="form.description" placeholder="请输入描述" />
         </el-form-item>
@@ -543,8 +543,8 @@ export default {
     // 表单重置
     reset() {
       this.form = {
-        dataId: null,
-        userId: null,
+        // dataId: null,
+        // userId: null,
         name: null,
         description: null,
         categoryId: null,
@@ -554,16 +554,20 @@ export default {
     },
     // 弹窗表单重置
     resetUserForm() {
-      this.userForm = {
-        userId: null,
-        username: null,
-        nickname: null,
-        email: null,
-        phone: null,
-        gender: null,
-        countryId: null,
-        nin: null,
-      };
+      this.fetchCurrentUser();
+      // this.userForm.nickname = null;
+      // this.userForm.email = null;
+      // this.userForm.phone = null;
+      //this.userForm = {
+        // userId: null,
+        // username: null,
+        //nickname: null,
+        //email: null,
+        //phone: null,
+        // gender: null,
+        // countryId: null,
+        // nin: null,
+      //};
     },
     // 右侧抽屉取消
     cancel() {

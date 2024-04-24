@@ -88,6 +88,7 @@
         <button @click="register" class="auth-button">注册</button>
       </div>
       <div class="auth-buttons" v-else>
+        <button @click="my" class="auth-button">我的</button>
         <button @click="logout" class="auth-button">登出</button>
       </div>
     </div>
@@ -156,6 +157,15 @@ export default {
       localStorage.removeItem('token');
       this.$message.success('登出成功');
       this.$router.go(0);
+    },
+    my(){
+      const currentUserId = localStorage.getItem("userId");
+      const userRole = localStorage.getItem('role');
+      if(userRole == '101'){
+        this.$router.push('/user/personal/' + currentUserId);
+      }else{
+        this.$router.push('/user/enterprise/' + currentUserId);
+      }
     },
     async performSearch() {
       if (!this.searchQuery) return;

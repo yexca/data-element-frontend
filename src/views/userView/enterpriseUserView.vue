@@ -539,28 +539,33 @@
       },
       // 表单重置
       reset() {
-        this.form = {
-          dataId: null,
-          userId: null,
-          name: null,
-          description: null,
-          categoryId: null,
-          fileLink: null,
-          status: null,
-        };
+        this.form.name = null;
+        this.form.description = null;
+        this.form.categoryId = null;
+        this.form.fileLink = null
+        // this.form = {
+        //   dataId: null,
+        //   userId: null,
+        //   name: null,
+        //   description: null,
+        //   categoryId: null,
+        //   fileLink: null,
+        //   status: null,
+        // };
       },
       // 弹窗表单重置
       resetUserForm() {
-        this.userForm = {
-          userId: null,
-          username: null,
-          nickname: null,
-          email: null,
-          phone: null,
-          gender: null,
-          countryId: null,
-          nin: null,
-        };
+        this.fetchCurrentUser();
+        // this.userForm = {
+        //   userId: null,
+        //   username: null,
+        //   nickname: null,
+        //   email: null,
+        //   phone: null,
+        //   gender: null,
+        //   countryId: null,
+        //   nin: null,
+        // };
       },
       // 右侧抽屉取消
       cancel() {

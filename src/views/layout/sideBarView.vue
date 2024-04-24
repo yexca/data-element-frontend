@@ -45,7 +45,7 @@
         <i class="el-icon-info"></i>
         <span slot="title">信息管理</span>
       </template>
-      <el-menu-item index="/admin/info/country">国家信息</el-menu-item>
+      <el-menu-item index="/admin/info/country">国家或地区</el-menu-item>
       <el-menu-item index="/admin/info/category">分类信息</el-menu-item>
       <!-- <el-menu-item index="/admin/info/role">角色信息</el-menu-item> -->
     </el-submenu>
