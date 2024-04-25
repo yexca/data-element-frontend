@@ -199,7 +199,7 @@ export default {
       this.drawer = true;
     },
     isImage(link) {
-      return /\.(jpeg|jpg|gif|png)$/.test(link);
+      return /\.(jpeg|jpg|gif|png|webp)$/.test(link);
     },
     activateSearch() {
       this.$refs.searchInput.focus();
@@ -231,7 +231,7 @@ export default {
 
 <style scoped>
 .main-container {
-  background-image: url('@/assets/pic/search.png');
+  background-image: url('@/assets/pic/search.webp');
   background-size: cover;
   background-attachment: fixed;  /* 确保背景图片固定 */
   min-height: 100vh;

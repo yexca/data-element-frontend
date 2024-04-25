@@ -772,7 +772,7 @@
     flex-direction: column;
     align-items: center;
     padding-top: 20px;
-    background-image: url('@/assets/pic/enterprise.png');
+    background-image: url('@/assets/pic/enterprise.webp');
     background-size: cover;
     background-attachment: fixed;  /* 确保背景图片固定 */
     min-height: 100vh;

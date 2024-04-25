@@ -774,7 +774,7 @@ export default {
   flex-direction: column;
   align-items: center;
   padding-top: 20px;
-  background-image: url('@/assets/pic/personal.png');
+  background-image: url('@/assets/pic/personal.webp');
   background-size: cover;
   background-attachment: fixed;  /* 确保背景图片固定 */
   min-height: 100vh;

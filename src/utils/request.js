@@ -85,7 +85,7 @@ service.interceptors.response.use(
   (response) => {
       const data = response.data;
       if(data.code !== 1){
-        Message.error(data.data || 'Error');
+        Message.error(data.msg || 'Error');
         return Promise.reject(new Error(data.data || 'Error'));
       }
       return response;

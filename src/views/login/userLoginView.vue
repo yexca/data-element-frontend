@@ -53,8 +53,9 @@ methods: {
         // 检查是否有重定向的目标页面，如果有，登录后跳转到该页面
         const redirect = this.$route.query.redirect || '/user/personal/' + res.data.data.userId; // 如果没有指定重定向页面，默认跳转到管理仪表板
         this.$router.push(redirect);
-      }).catch(error => {
-        this.$message.error('登录失败: ' + error.message);
+      }).catch(() => {
+        // this.$message.error('登录失败: ' + error.message);
+        return;
       });
     },
     enterpriseLogin() {
@@ -88,7 +89,7 @@ display: flex;
 justify-content: center;
 align-items: center;
 height: 100vh;
-background-image: url('@/assets/pic/userLogin.png');
+background-image: url('@/assets/pic/userLogin.webp');
 background-size: cover;
 backdrop-filter: blur(10px);
 }
