@@ -252,6 +252,8 @@ export default {
           message: '删除成功',
           type: 'success'
         });
+      }).catch(() => {
+        return;
       });
     },
     // 弹窗提交按钮

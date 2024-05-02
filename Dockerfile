@@ -12,7 +12,7 @@ COPY nginx.conf /etc/nginx/nginx.conf
 # 更改文件夹和文件的权限
 # RUN chmod -R 755 /usr/share/nginx/html/dist
 
-# docker build -t yexca/data-vue:v1.1 .
+# docker build -t yexca/data-vue:v1.2 .
 
 # FROM node:latest as build-stage
 # WORKDIR /app
