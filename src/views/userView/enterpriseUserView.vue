@@ -9,34 +9,34 @@
     <div class="layout-container">
       <!-- 基本信息 -->
       <el-card class="info-card" shadow="hover">
-        <div slot="header" class="header">企业用户信息</div>
-        <el-divider content-position="left">基本信息</el-divider>
+        <div slot="header" class="header">{{ $t('userView.enterpriseTitle') }}</div>
+        <el-divider content-position="left">{{ $t('userView.baseInfo') }}</el-divider>
         <el-row :gutter="20">
           <el-col :span="8"
-            ><strong>用户ID:</strong> {{ userInfo.userId }}</el-col
+            ><strong>{{ $t('userView.userId') }}</strong> {{ userInfo.userId }}</el-col
           >
           <el-col :span="8"
-            ><strong>用户名:</strong> {{ userInfo.username }}</el-col
+            ><strong>{{ $t('userView.username') }}</strong> {{ userInfo.username }}</el-col
           >
           <el-col :span="8"
-            ><strong>企业:</strong> {{ userInfo.enterpriseName }}</el-col
+            ><strong>{{ $t('userView.enterprise') }}</strong> {{ userInfo.enterpriseName }}</el-col
           >
         </el-row>
         <el-row :gutter="20">
-          <el-divider>其他信息</el-divider>
+          <el-divider>{{ $t('userView.otherInfo') }}</el-divider>
           <el-col :span="8"
-            ><strong>国家或地区:</strong> {{ userInfo.countryName }}</el-col
+            ><strong>{{ $t('userView.country') }}</strong> {{ userInfo.countryName }}</el-col
           >
-          <el-col :span="8"><strong>状态:</strong> {{ userInfo.status }}</el-col>
+          <el-col :span="8"><strong>{{ $t('userView.status') }}</strong> {{ userInfo.status == '启用' ? $t('option.enable') : $t('option.disable') }}</el-col>
         </el-row>
   
-        <el-divider content-position="right">联系方式</el-divider>
+        <el-divider content-position="right">{{ $t('userView.concatInfo') }}</el-divider>
         <el-row :gutter="20">
           <el-col :span="12"
-            ><strong>电话:</strong> {{ userInfo.phone || "未填写" }}</el-col
+            ><strong>{{ $t('userView.phone') }}</strong> {{ userInfo.phone || $t('userView.noInfo') }}</el-col
           >
           <el-col :span="12"
-            ><strong>电子邮件:</strong> {{ userInfo.email || "未填写" }}</el-col
+            ><strong>{{ $t('userView.email') }}</strong> {{ userInfo.email || $t('userView.noInfo') }}</el-col
           >
         </el-row>
   
@@ -44,54 +44,54 @@
           <el-divider></el-divider>
           <el-col :span="24">
             <el-button @click="handleUpdateUserInfo" type="primary"
-              >修改信息</el-button
+              >{{ $t('userView.editInfo') }}</el-button
             >
           </el-col>
         </el-row>
       </el-card>
   
       <!-- 个人信息修改弹窗 -->
-      <el-dialog title="修改企业信息" :visible.sync="openDialog">
+      <el-dialog :title="$t('formTitle.updateEnterpriseUser')" :visible.sync="openDialog">
         <el-form
           ref="userForm"
           :model="userForm"
           :rules="userRules"
           label-width="80px"
         >
-          <el-form-item label="用户名" prop="username">
-            <el-input v-model="userForm.username" placeholder="请输入用户名" />
+          <el-form-item :label="$t('form.username')" prop="username">
+            <el-input v-model="userForm.username" :placeholder="$t('placeholder.username')" />
           </el-form-item>
-          <el-form-item label="密码" prop="password">
+          <el-form-item :label="$t('form.password')" prop="password">
             <el-input
               v-model="userForm.password"
               type="password"
               show-password
-              placeholder="请输入密码"
+              :placeholder="$t('placeholder.password')"
             />
           </el-form-item>
-          <el-form-item label="确认密码" prop="checkPassword">
+          <el-form-item :label="$t('form.checkPassword')" prop="checkPassword">
             <el-input
               v-model="userForm.checkPassword"
-              placeholder="请再次输入密码"
+              :placeholder="$t('placeholder.checkPassword')"
             ></el-input>
           </el-form-item>
-          <el-form-item label="企业名" prop="enterpriseName">
+          <el-form-item :label="$t('form.enterpriseName')" prop="enterpriseName">
             <el-input
               v-model="userForm.enterpriseName"
-              placeholder="请输入企业名"
+              :placeholder="$t('placeholder.enterpriseName')"
             />
           </el-form-item>
-          <el-form-item label="电子邮箱" prop="email">
-            <el-input v-model="userForm.email" placeholder="请输入电子邮箱" />
+          <el-form-item :label="$t('form.email')" prop="email">
+            <el-input v-model="userForm.email" :placeholder="$t('placeholder.email')" />
           </el-form-item>
-          <el-form-item label="手机号" prop="phone">
+          <el-form-item :label="$t('form.phone')" prop="phone">
             <el-input
               v-model.number="userForm.phone"
-              placeholder="请输入手机号"
+              :placeholder="$t('placeholder.phone')"
             />
           </el-form-item>
 
-          <el-form-item label="企业证明" prop="evidence">
+          <el-form-item :label="$t('form.evidence')" prop="evidence">
           <el-upload
             class="upload-demo"
             :file-list="fileList"
@@ -101,18 +101,18 @@
             :on-remove="handleRemove"
             :limit="1"
           >
-            <el-button size="small" type="primary">点击上传</el-button>
-            <div slot="tip" class="el-upload__tip">文件大小不超过 10MB</div>
+            <el-button size="small" type="primary">{{ $t('formOperation.upload') }}</el-button>
+            <div slot="tip" class="el-upload__tip">{{ $t('placeholder.upload') }}</div>
           </el-upload>
         </el-form-item>
   
       <!-- 国家或地区选择 -->
-          <el-form-item label="国家或地区" prop="countryId">
+          <el-form-item :label="$t('form.country')" prop="countryId">
             <el-select
               v-model="userForm.countryId"
               filterable
               clearable
-              placeholder="请选择国家或地区"
+              :placeholder="$t('placeholder.country')"
             >
               <el-option
                 v-for="country in countries"
@@ -125,9 +125,9 @@
   
         </el-form>
         <div class="dialog-footer" slot="footer">
-          <el-button type="primary" @click="submitUserForm">确 定</el-button>
-          <el-button type="info" @click="resetUserForm">重 置</el-button>
-          <el-button @click="cancelUserForm">取 消</el-button>
+          <el-button type="primary" @click="submitUserForm">{{ $t('drawOperation.submit') }}</el-button>
+          <el-button type="info" @click="resetUserForm">{{ $t('drawOperation.reset') }}</el-button>
+          <el-button @click="cancelUserForm">{{ $t('drawOperation.cancel') }}</el-button>
         </div>
       </el-dialog>
   
@@ -135,7 +135,7 @@
   
       <!-- CRUD 操作表格部分 -->
       <el-card class="crud-table">
-        <div slot="header" class="header">企业数据</div>
+        <div slot="header" class="header">{{ $t('userView.userData') }}</div>
         <!-- 表格和相关操作按钮放在这里 -->
         <div class="content-main">
           <!-- 表格主体 -->
@@ -148,27 +148,27 @@
               fixed="left"
             >
             </el-table-column>
-            <el-table-column prop="name" label="名称" width="100" sortable>
+            <el-table-column prop="name" :label="$t('form.name')" width="100" sortable>
             </el-table-column>
-            <el-table-column prop="description" label="描述" width="400">
+            <el-table-column prop="description" :label="$t('form.description')" width="400">
             </el-table-column>
             <el-table-column
               prop="categoryName"
-              label="分类"
+              :label="$t('form.category')"
               width="100"
               align="center"
             >
             </el-table-column>
-            <el-table-column prop="username" label="用户名" width="120" sortable>
+            <el-table-column prop="username" :label="$t('form.username')" width="120" sortable>
             </el-table-column>
-            <el-table-column prop="fileLink" label="文件链接" width="170">
+            <el-table-column prop="fileLink" :label="$t('form.fileLink')" width="170">
               <template slot-scope="scope">
-                <a :href="scope.row.fileLink" target="_blank">点击下载<!--{{ scope.row.name }}--></a>
+                <a :href="scope.row.fileLink" target="_blank">{{ $t('search.download') }}</a>
               </template>
             </el-table-column>
             <el-table-column
               prop="status"
-              label="状态"
+              :label="$t('form.status')"
               width="80"
               fixed="right"
               align="center"
@@ -176,10 +176,10 @@
             >
               <template slot-scope="scope">
                 <el-tag type="success" v-if="scope.row.status == '启用'"
-                  >启用</el-tag
+                  >{{ $t('option.enable') }}</el-tag
                 >
                 <el-tag type="danger" v-if="scope.row.status == '禁用'"
-                  >禁用</el-tag
+                  >{{ $t('option.disable') }}</el-tag
                 >
               </template>
             </el-table-column>
@@ -190,7 +190,7 @@
               v-if="isCurrentUser"
             >
               <template slot="header">
-                <el-button @click="handleAdd">新增</el-button>
+                <el-button @click="handleAdd">{{ $t('formOperation.add') }}</el-button>
               </template>
               <template slot-scope="scope">
                 <el-button
@@ -199,7 +199,7 @@
                   size="mini"
                   icon="el-icon-circle-close"
                   @click="handleStatus(scope.row, 1)"
-                  >禁用</el-button
+                  >{{ $t('option.disable') }}</el-button
                 >
                 <el-button
                   v-show="scope.row.status == '禁用'"
@@ -208,20 +208,20 @@
                   size="mini"
                   icon="el-icon-circle-check"
                   @click="handleStatus(scope.row, 0)"
-                  >启用</el-button
+                  >{{ $t('option.enable') }}</el-button
                 >
                 <el-button
                   size="mini"
                   icon="el-icon-edit"
                   @click="handleUpdate(scope.row)"
-                  >修改</el-button
+                  >{{ $t('option.edit') }}</el-button
                 >
                 <el-button
                   type="danger"
                   size="mini"
                   icon="el-icon-delete"
                   @click="handleDelete(scope.row)"
-                  >删除</el-button
+                  >{{ $t('option.delete') }}</el-button
                 >
               </template>
             </el-table-column>
@@ -255,23 +255,23 @@
           label-width="100px"
           class="drawer-form"
         >
-          <el-form-item label="数据名" prop="name">
-          <el-input v-model="form.name" placeholder="请输入数据名" />
+          <el-form-item :label="$t('form.name')" prop="name">
+          <el-input v-model="form.name" :placeholder="$t('placeholder.name')" />
         </el-form-item>
-        <el-form-item label="企业" prop="userId">
+        <!-- <el-form-item label="企业" prop="userId">
           <el-input v-model="form.userId" placeholder="请输入企业ID" />
-        </el-form-item>
-        <el-form-item label="描述" prop="description">
-          <el-input v-model="form.description" placeholder="请输入描述" />
+        </el-form-item> -->
+        <el-form-item :label="$t('form.description')" prop="description">
+          <el-input v-model="form.description" :placeholder="$t('placeholder.description')" />
         </el-form-item>
   
           <!-- 分类选择 -->
-          <el-form-item label="分类" prop="categoryId">
+          <el-form-item :label="$t('form.category')" prop="categoryId">
             <el-select
               v-model="form.categoryId"
               filterable
               clearable
-              placeholder="请选择分类"
+              :placeholder="$t('placeholder.category')"
             >
               <el-option
                 v-for="category in categories"
@@ -282,7 +282,7 @@
             </el-select>
           </el-form-item>
 
-          <el-form-item label="样本数据文件" prop="sampleFileLink">
+          <el-form-item :label="$t('form.sampleFile')" prop="sampleFileLink">
           <el-upload
             class="upload-demo"
             :file-list="fileList"
@@ -292,13 +292,13 @@
             :on-remove="handleRemove"
             :limit="1"
           >
-            <el-button size="small" type="primary">点击上传</el-button>
-            <div slot="tip" class="el-upload__tip">文件大小不超过 10MB</div>
+            <el-button size="small" type="primary">{{ $t('formOperation.upload') }}</el-button>
+            <div slot="tip" class="el-upload__tip">{{ $t('placeholder.upload') }}</div>
           </el-upload>
         </el-form-item>
   
-        <el-form-item label="文件链接" prop="fileLink">
-          <el-input v-model="form.fileLink" placeholder="请输入文件链接"></el-input>
+        <el-form-item :label="$t('form.fileLink')" prop="fileLink">
+          <el-input v-model="form.fileLink" :placeholder="$t('placeholder.fileLink')"></el-input>
         </el-form-item>
         
         </el-form>
@@ -306,9 +306,9 @@
           class="demo-drawer__footer"
           style="display: flex; justify-content: space-around"
         >
-          <el-button type="primary" @click="submitForm">确 定</el-button>
-          <el-button type="info" @click="resetForm">重 置</el-button>
-          <el-button @click="cancel">取 消</el-button>
+          <el-button type="primary" @click="submitForm">{{ $t('drawOperation.submit') }}</el-button>
+          <el-button type="info" @click="resetForm">{{ $t('drawOperation.reset') }}</el-button>
+          <el-button @click="cancel">{{ $t('drawOperation.cancel') }}</el-button>
         </div>
       </el-drawer>
   
@@ -343,7 +343,7 @@
       // 密码确认--开始
       var validatePass = (rules, value, callback) => {
           if (value === '') {
-            callback(new Error('请输入密码'));
+            callback(new Error(this.$t('placeholder.password')));
           } else {
             if (this.form.checkPassword !== '') {
               this.$refs.form.validateField('checkPassword');
@@ -353,9 +353,9 @@
         };
         var validatePass2 = (rules, value, callback) => {
           if (value === '') {
-            callback(new Error('请再次输入密码'));
+            callback(new Error(this.$t('placeholder.checkPassword')));
           } else if (value !== this.form.password) {
-            callback(new Error('两次输入密码不一致!'));
+            callback(new Error(this.$t('errorMessage.checkPassword')));
           } else {
             callback();
           }
@@ -400,26 +400,29 @@
         // 表单规则
         rules: {
           name: [
-            { required: true, message: "请输入数据名", trigger: "blur" },
+            { required: true, message: this.$t('errorMessage.name'), trigger: "blur" },
             {
               pattern: /^[\u4e00-\u9fff\u3040-\u30ff\uac00-\ud7afA-Za-z0-9\s]+$/,
-              message: "仅允许汉字、字母、数字、日文和韩文",
+              message: this.$t('errorMessage.nickname'),
               trigger: "blur",
             },
           ],
           userId: [
-            { required: true, message: "请输入用户ID", trigger: "blur" },
-            { pattern: /^[0-9]+$/, message: "仅允许输入数字", trigger: "blur" },
+            { required: true, message: this.$t('errorMessage.userId'), trigger: "blur" },
+            { pattern: /^[0-9]+$/, message: this.$t('errorMessage.userIdLimit'), trigger: "blur" },
           ],
           categoryId: [
-            { required: true, message: "请选择分类", trigger: "change" },
+            { required: true, message: this.$t('errorMessage.category'), trigger: "change" },
+          ],
+          sampleFileLink: [
+            {required: true, message: this.$t('errorMessage.sampleFile'), trigger: 'change'}
           ],
           fileLink: [
-            { required: true, message: "请上传数据", trigger: "blur" },
+            { required: true, message: this.$t('errorMessage.fileLink'), trigger: "blur" },
             {
               pattern:
                 /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/|ftp:\/\/|hdfs:\/\/)[a-zA-Z0-9\-.]+(\.[a-zA-Z]{2,})?(:[0-9]{1,5})?(\/.*)?$/,
-              message: "请输入正确的链接",
+              message: this.$t('errorMessage.fileLinkLimit'),
               trigger: "blur",
             },
           ],
@@ -427,35 +430,35 @@
         // 个人信息表单规则
         userRules: {
           username: [
-            {required: true, message: '请输入用户名', trigger: 'blur'}, // 触发方式为失去焦点
-            {pattern: /^[A-Za-z0-9]+$/, message: '用户名只能使用字母和数字', trigger: 'blur'},
-            {min: 5, message: '用户名至少五个字符', trigger: 'blur'}
+            {required: true, message: this.$t('errorMessage.username'), trigger: 'blur'}, // 触发方式为失去焦点
+            {pattern: /^[A-Za-z0-9]+$/, message: this.$t('errorMessage.usernameLimit'), trigger: 'blur'},
+            {min: 5, message: this.$t('errorMessage.usernameLong'), trigger: 'blur'}
           ],
           password: [
             { validator: validatePass, trigger: 'blur' },
-            {pattern: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/, message: '密码至少包含字母和数字且最低八位', trigger: 'blur'}
+            {pattern: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/, message: this.$t('errorMessage.password'), trigger: 'blur'}
           ],
           checkPassword: [
             { validator: validatePass2, trigger: 'blur' }
           ],
           nickname: [
-            { pattern: /^[\u4e00-\u9fff\u3040-\u30ff\uac00-\ud7afA-Za-z0-9\s]+$/, message: '仅允许汉字、字母、数字、日文和韩文', trigger: 'blur'}
+            { pattern: /^[\u4e00-\u9fff\u3040-\u30ff\uac00-\ud7afA-Za-z0-9\s]+$/, message: this.$t('errorMessage.nickname'), trigger: 'blur'}
           ],
           email: [
-            {pattern: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/, message: '请输入正确的邮箱格式', trigger: 'blur'}
+            {pattern: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/, message: this.$t('errorMessage.email'), trigger: 'blur'}
           ],
           phone: [
-            { pattern: /^\d{6,11}$/, message: '手机号必须为数字且为 6-11 位数字', trigger: 'blur'}
+            { pattern: /^\d{6,11}$/, message: this.$t('errorMessage.phone'), trigger: 'blur'}
           ],
           gender: [
-            {required: true, message: '请选择性别', trigger: 'change'}
+            {required: true, message: this.$t('errorMessage.gender'), trigger: 'change'}
           ],
           countryId: [
-            {required: true, message: '请选择国家或地区', trigger: 'change'}
+            {required: true, message: this.$t('errorMessage.country'), trigger: 'change'}
           ],
           nin: [
-            {required: true, message: '请输入身份证号', trigger: 'blur'},
-            {min: 6, message: '身份证号最短6个字符'}
+            {required: true, message: this.$t('errorMessage.nin'), trigger: 'blur'},
+            {min: 6, message: this.$t('errorMessage.ninLong')}
           ]
         }
       };
@@ -593,14 +596,14 @@
           });
           // console.log(this.form)
           // 显示右侧抽屉
-          this.drawerTitle = "修改企业数据信息";
+          this.drawerTitle = this.$t('formTitle.updateEnterpriseData');
           this.openDrawer = true;
         });
       },
       // 新增按钮操作
       handleAdd() {
         this.reset();
-        this.drawerTitle = "新增企业数据";
+        this.drawerTitle = this.$t('errorMessage.addEnterpriseData');
         this.openDrawer = true;
       },
       // 删除按钮操作
@@ -609,7 +612,7 @@
         delEnterpriseData(dataId).then(() => {
           // 成功提醒弹窗
           this.$message({
-            message: "删除成功",
+            message: this.$t('successMessage.delete'),
             type: "success",
           });
         });
@@ -623,7 +626,7 @@
                 updateEnterpriseData(this.form.dataId, this.form).then(() => {
                 // 成功提醒弹窗
                 this.$message({
-                  message: "修改成功",
+                  message: this.$t('successMessage.update'),
                   type: "success",
                 });
                 // 关闭弹窗
@@ -634,7 +637,7 @@
               addEnterpriseData(this.form).then(() => {
                 // 成功提醒弹窗
                 this.$message({
-                  message: "新增成功",
+                  message: this.$t('successMessage.add'),
                   type: "success",
                 });
                 // 关闭弹窗
@@ -644,7 +647,7 @@
             }
           } else {
             this.$message({
-              message: "请检查必填项",
+              message: this.$t('errorMessage.validate'),
               type: "warning",
             });
           }
@@ -657,7 +660,7 @@
         updateEnterpriseData(row.dataId, this.form).then(() => {
           // 成功提醒弹窗
           this.$message({
-            message: "修改成功",
+            message: this.$t('successMessage.update'),
             type: "success",
           });
           // 重新获取列表
@@ -669,8 +672,8 @@
         upload(file)
           .then((res) => {
             this.$notify({
-              title: "成功",
-              message: "上传成功",
+              title: this.$t('notifyTitle.success'),
+              message: this.$t('notifyMessage.uploadSuccess'),
               type: "success",
               duration: 1000,
             });
@@ -679,8 +682,8 @@
           })
           .catch(() => {
             this.$notify({
-              title: "错误",
-              message: "上传失败",
+              title: this.$t('notifyTitle.error'),
+              message: this.$t('notifyMessage.uploadFail'),
               type: "error",
               duration: 1000,
             });
@@ -690,22 +693,22 @@
       handleRemove() {
         if (!this.form.fileLink) {
           return this.$notify({
-            title: "警告",
-            message: "没有文件可以删除",
+            title: this.$t('notifyTitle.warn'),
+            message: this.$t('notifyMessage.noFileToDelete'),
             type: "warning",
             duration: 1500,
           });
         } else {
           this.$notify({
-            title: "消息",
-            message: "文件删除中",
+            title: this.$t('notifyTitle.message'),
+            message: this.$t('notifyMessage.fileDeleting'),
             duration: 1500,
           });
           deleteFile({ file: this.form.fileLink })
             .then(() => {
               this.$notify({
-                title: "成功",
-                message: "文件删除成功",
+                title: this.$t('notifyTitle.success'),
+                message: this.$t('notifyMessage.fileDeleteSuccess'),
                 type: "success",
                 duration: 1000,
               });
@@ -713,8 +716,8 @@
             })
             .catch(() => {
               this.$notify({
-                title: "错误",
-                message: "删除失败",
+                title: this.$t('notifyTitle.error'),
+                message: this.$t('notifyMessage.fileDeleteFail'),
                 type: "error",
                 duration: 1000,
               });
@@ -725,15 +728,16 @@
       // beforeUpload(file){
       beforeUpload() {
         this.$notify({
-          title: "消息",
-          message: "文件上传中",
+          title: this.$t('notifyTitle.message'),
+          message: this.$t('notifyMessage.fileUploading'),
           duration: 1000,
         });
       },
       // 在移除文件前
       // beforeRemove(file, fileList){
       beforeRemove(file) {
-        return this.$confirm(`确定移除 ${file.name}？`);
+        const message = this.$t('confirm.remove', { filename: file.name });
+        return this.$confirm(message);
       },
       // 修改个人信息
       handleUpdateUserInfo() {
@@ -747,7 +751,7 @@
             updateEnterpriseUser(this.userForm).then(() => {
               // 成功提醒弹窗
               this.$message({
-                message: "修改成功",
+                message: this.$t('successMessage.update'),
                 type: "success",
               });
               // 关闭弹窗
@@ -756,7 +760,7 @@
             });
           } else {
             this.$message({
-              message: "请检查必填项",
+              message: this.$t('errorMessage.validate'),
               type: "warning",
             });
           }

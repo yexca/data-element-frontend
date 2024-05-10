@@ -8,28 +8,28 @@
           <h2 v-html="highlightText(selectedItem.name)"></h2>
           <p v-html="highlightText(selectedItem.description)"></p>
           <el-divider></el-divider>
-          <p>用户名: <router-link :to="'/user/personal/' + selectedItem.userId">{{ selectedItem.username }}</router-link></p>
-          <p>分类: {{ selectedItem.categoryName }}</p>
-          <p>文件链接: <a :href="selectedItem.fileLink" target="_blank">点击下载</a></p>
+          <p>{{ $t('search.username') }}：<router-link :to="'/user/personal/' + selectedItem.userId">{{ selectedItem.username }}</router-link></p>
+          <p>{{ $t('search.category') }}: {{ selectedItem.categoryName }}</p>
+          <p>{{ $t('search.fileLink') }}: <a :href="selectedItem.fileLink" target="_blank">{{ $t('search.download') }}</a></p>
           <el-divider></el-divider>
-          <p v-if="isImage(selectedItem.fileLink)">文件预览：</p>
+          <p v-if="isImage(selectedItem.fileLink)">{{ $t('search.filePreview') }}：</p>
           <img v-if="isImage(selectedItem.fileLink)" :src="selectedItem.fileLink" class="image-preview" />
           <!-- <el-button type="primary" @click="handleCloseResult">关闭</el-button> -->
-          <div class="tips">提示：按空格键可以关闭此窗口</div>
+          <div class="tips">{{ $t('search.tips') }}</div>
         </div>
         <div v-else>
           <h2 v-html="highlightText(selectedItem.name)"></h2>
           <p v-html="highlightText(selectedItem.description)"></p>
           <el-divider></el-divider>
-          <p>企业: <router-link :to="'/user/personal/' + selectedItem.userId">{{ selectedItem.username }}</router-link></p>
-          <p>分类: {{ selectedItem.categoryName }}</p>
-          <p>样本文件: <a :href="selectedItem.sampleFileLink" target="_blank">点击下载</a></p>
-          <p>完整文件: <a :href="selectedItem.fileLink" target="_blank">点击下载</a></p>
+          <p>{{ $t('search.enterprise') }}: <router-link :to="'/user/personal/' + selectedItem.userId">{{ selectedItem.username }}</router-link></p>
+          <p>{{ $t('search.category') }}: {{ selectedItem.categoryName }}</p>
+          <p>{{ $t('search.sampleFile') }}: <a :href="selectedItem.sampleFileLink" target="_blank">{{ $t('search.download') }}</a></p>
+          <p>{{ $t('search.file') }}: <a :href="selectedItem.fileLink" target="_blank">{{ $t('search.download') }}</a></p>
           <el-divider></el-divider>
-          <p v-if="isImage(selectedItem.sampleFileLink)">样本文件预览：</p>
+          <p v-if="isImage(selectedItem.sampleFileLink)">{{ $t('search.sampleFilePreview') }}：</p>
           <img v-if="isImage(selectedItem.sampleFileLink)" :src="selectedItem.sampleFileLink" class="image-preview" />
           <!-- <el-button type="primary" @click="handleCloseResult">关闭</el-button> -->
-          <div class="tips">提示：按空格键可以关闭此窗口</div>
+          <div class="tips">{{ $t('search.tips') }}</div>
         </div>
     </div>
     <div class="search-container" :class="{ 'top-search': searchPerformed }">
@@ -41,11 +41,11 @@
           @keyup.enter="performSearch"
           @focus="isActive = true"
           @blur="isActive = false"
-          placeholder="按空格键开始搜索"
+          :placeholder="$t('search.searchPlaceholder')"
         />
-        <button @click="performSearch" class="search-button">搜索</button>
+        <button @click="performSearch" class="search-button">{{ $t('common.search') }}</button>
       </div>
-      <div v-if="isLoading" class="loading">正在加载...</div>
+      <div v-if="isLoading" class="loading">{{ $t('search.loading') }}</div>
       <div v-if="searchPerformed">
         <div v-if="searchResults.length" class="results-container">
           <div v-for="item in paginatedResults" :key="item.dataId" @click="selectItem(item)" class="result-item">
@@ -53,43 +53,63 @@
               <h3 v-html="highlightText(item.name)" target="_blank"></h3>
               <p v-html="highlightText(item.description)" target="_blank"></p>
               <div class="additional-info">
-                <span>用户名: {{ item.username }}</span> |
-                <span>分类: {{ item.categoryName || '未分类' }}</span> |
-                <span>创建时间: {{ item.createTime }}</span> |
-                <span>修改时间: {{ item.updateTime }}</span>
+                <span>{{ $t('search.username') }}: {{ item.username }}</span> |
+                <span>{{ $t('search.category') }}: {{ item.categoryName || $t('search.noCategoty') }}</span> |
+                <span>{{ $t('search.createTime') }}: {{ item.createTime }}</span> |
+                <span>{{ $t('search.updateTime') }}: {{ item.updateTime }}</span>
               </div>
             </div>
             <div v-else>
               <h3 v-html="highlightText(item.name)" target="_blank"></h3>
               <p v-html="highlightText(item.description)" target="_blank"></p>
               <div class="additional-info">
-                <span>企业: {{ item.username }}</span> |
-                <span>分类: {{ item.categoryName || '未分类' }}</span> |
-                <span>创建时间: {{ item.createTime }}</span> |
-                <span>修改时间: {{ item.updateTime }}</span>
+                <span>{{ $t('search.enterprise') }}: {{ item.username }}</span> |
+                <span>{{ $t('search.category') }}: {{ item.categoryName || $t('search.noCategoty') }}</span> |
+                <span>{{ $t('search.createTime') }}: {{ item.createTime }}</span> |
+                <span>{{ $t('search.updateTime') }}: {{ item.updateTime }}</span>
               </div>
             </div>
           </div>
           <div class="pagination-container">
             <div class="pagination">
-              <button @click="previousPage" :disabled="currentPage <= 1" class="pagination-button">上一页</button>
+              <button @click="previousPage" :disabled="currentPage <= 1" class="pagination-button">{{ $t('search.pre') }}</button>
               <span class="page-info">{{ currentPage }} / {{ totalPages }}</span>
-              <button @click="nextPage" :disabled="currentPage >= totalPages" class="pagination-button">下一页</button>
+              <button @click="nextPage" :disabled="currentPage >= totalPages" class="pagination-button">{{ $t('search.next') }}</button>
             </div>
-            <div class="total-results">总结果数: {{ totalResults }}</div>
+            <div class="total-results">{{ $t('search.total') }}: {{ totalResults }}</div>
           </div>
         </div>
         <div v-else class="results-container no-results">
-          <div class="result-item">没有找到结果</div>
+          <div class="result-item">{{ $t('search.noResult') }}</div>
         </div>
       </div>
       <div class="auth-buttons" v-if="!loginFlag">
-        <button @click="login" class="auth-button">登录</button>
-        <button @click="register" class="auth-button">注册</button>
+        <el-dropdown style="margin: 25px 5px; text-align: right" @command="handleTranslate">
+          <span class="el-dropdown-link">
+            {{ $t('selectLanguage') }}<i class="el-icon-arrow-down el-icon--right"></i>
+          </span>
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item command="en">English</el-dropdown-item>
+            <el-dropdown-item command="zh">中文</el-dropdown-item>
+            <el-dropdown-item command="jp">日本語</el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
+        <button @click="login" class="auth-button">{{ $t('common.login') }}</button>
+        <button @click="register" class="auth-button">{{ $t('common.register') }}</button>
       </div>
       <div class="auth-buttons" v-else>
-        <button @click="my" class="auth-button">我的</button>
-        <button @click="logout" class="auth-button">登出</button>
+        <el-dropdown style="margin: 25px 5px; text-align: right" @command="handleTranslate">
+          <span class="el-dropdown-link">
+            {{ $t('selectLanguage') }}<i class="el-icon-arrow-down el-icon--right"></i>
+          </span>
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item command="en">English</el-dropdown-item>
+            <el-dropdown-item command="zh">中文</el-dropdown-item>
+            <el-dropdown-item command="jp">日本語</el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
+        <button @click="my" class="auth-button">{{ $t('common.my') }}</button>
+        <button @click="logout" class="auth-button">{{ $t('common.logout') }}</button>
       </div>
     </div>
     
@@ -155,7 +175,7 @@ export default {
     },
     logout() {
       localStorage.removeItem('token');
-      this.$message.success('登出成功');
+      this.$message.success(this.$t('successMessage.logout'));
       this.$router.go(0);
     },
     my(){
@@ -177,11 +197,15 @@ export default {
           this.totalResults = response.data.data.total;
           this.searchPerformed = true;
         } else {
-          alert(response.data.msg || '搜索失败');
+          alert(response.data.msg || this.$t('errorMessage.search'));
         }
       } catch (error) {
-        console.error('搜索错误:', error);
-        alert('搜索请求失败');
+        this.$notify({
+          title: this.$t('notifyTitle.error'),
+          message: this.$t('notifyMessage.searchFail'),
+          type: 'error',
+          duration: 1000
+        });
       }
       this.isLoading = false;
       this.isActive = false;
@@ -224,6 +248,11 @@ export default {
     // handleCloseResult(){
     //   this.selectedItem = null;
     // }
+    handleTranslate(command){
+      this.$store.commit('setLocale', command);
+      this.$i18n.locale = command;
+      localStorage.setItem('locale', command);
+    }
   }
 }
 </script>

@@ -14,7 +14,7 @@ const service = axios.create({
 service.interceptors.request.use(
   (config) => {
     // 显式设置Content-Type
-    config.headers['Content-Type'] = 'application/json; charset=UTF-8';
+    // config.headers['Content-Type'] = 'application/json; charset=UTF-8';
     
     // 定义需要token验证的路径白名单
     const whitelist = ['/', '/search', '/country', '/user/users/personal/login', '/user/users/personal/register', '/user/users/enterprise/login', '/user/users/enterprise/register', '/admin/employee/login'];
@@ -36,9 +36,9 @@ service.interceptors.request.use(
           // console.log("没有token")
           // 根据路径判断应重定向到的登录页面
           // const loginPath = config.url.startsWith('/admin') ? '/admin/login' : '/login';
-          Message.error('未授权或登录失效，请重新登录');
+          Message.error(this.$t('requestError.401'));
           router.push('/admin/login');
-          return Promise.reject({ data: '未登录', config})
+          return Promise.reject({ data: this.$t('requestError.401'), config})
         }
         return config;
       }else {
@@ -46,9 +46,9 @@ service.interceptors.request.use(
         if(token){
           config.headers['token'] = token;
         }else{
-          Message.error('未授权或登录失效，请重新登录');
+          Message.error(this.$t('requestError.401'));
           router.push('/login');
-          return Promise.reject({ data: '未登录', config})
+          return Promise.reject({ data: this.$t('requestError.401'), config})
         }
         return config;
       }
@@ -118,27 +118,27 @@ service.interceptors.response.use(
     if(status){
       switch (status) {
         case 400:
-          Message.error('请求错误');
+          Message.error(this.$t('requestError.400'));
           break;
         case 401:
           // 避免在登录页面重复跳转
           if (router.currentRoute.path.startsWith('/admin') && router.currentRoute.path != '/admin/login' ){
-            Message.error('未授权或登录失效，请重新登录');
+            Message.error(this.$t('requestError.401'));
             router.replace('/admin/login');
           } else if(router.currentRoute.path.startsWith('/user') && router.currentRoute.path != '/login'){
-            Message.error('未授权或登录失效，请重新登录');
+            Message.error(this.$t('requestError.401'));
             router.push('/login');
           }
           break;
         case 403:
-          Message.error('拒绝访问');
+          Message.error(this.$t('requestError.403'));
           break;
         case 404:
-          Message.error('请求地址出错');
+          Message.error(this.$t('requestError.404'));
           router.push('/404')
           break;
         case 500:
-          Message.error('服务器内部错误');
+          Message.error(this.$t('requestError.500'));
           break;
         default:
           // 对于其他错误，视图处理

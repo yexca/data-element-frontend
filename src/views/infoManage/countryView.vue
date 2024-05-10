@@ -3,22 +3,22 @@
     <!-- header -->
     <!-- <div class="content-header" style="display: flex; "> -->
       <div class="content-header-search" style="display: flex; align-items: center;">
-        <span style="margin-left: 10px;">ID：</span>
-        <el-input v-model="queryParams.countryId" placeholder="请输入ID" clearable style="width: 110px;"></el-input>
-        <span style="margin-left: 10px;">国家或地区：</span>
-        <el-input v-model="queryParams.name" placeholder="请输入国家或地区" clearable style="width: 160px;"></el-input>
-        <span style="margin-left: 10px">手机区号：</span>
-        <el-input placeholder="请输入手机区号" v-model="queryParams.phone" clearable style="width: 150px"></el-input>
+        <span style="margin-left: 10px;">{{ $t('form.id') }}：</span>
+        <el-input v-model="queryParams.countryId" :placeholder="$t('placeholder.id')" clearable style="width: 110px;"></el-input>
+        <span style="margin-left: 10px;">{{ $t('form.name') }}：</span>
+        <el-input v-model="queryParams.name" :placeholder="$t('placeholder.name')" clearable style="width: 160px;"></el-input>
+        <span style="margin-left: 10px">{{ $t('form.phoneCode') }}：</span>
+        <el-input :placeholder="$t('placeholder.phoneCode')" v-model="queryParams.phone" clearable style="width: 150px"></el-input>
         
-        <span style="margin-left: 10px;">状态：</span>
+        <span style="margin-left: 10px;">{{ $t('form.status') }}：</span>
         <!-- <el-input v-model="queryParams.status" placeholder="请输入状态" clearable style="width: 11%;"></el-input> -->
-        <el-select v-model="queryParams.status" clearable placeholder="请选择状态" style="width: 11%;">
-          <el-option label="启用" value="0"></el-option>
-          <el-option label="禁用" value="1"></el-option>
+        <el-select v-model="queryParams.status" clearable :placeholder="$t('placeholder.status')" style="width: 11%;">
+          <el-option :label="$t('option.enable')" value="0"></el-option>
+          <el-option :label="$t('option.disable')" value="1"></el-option>
         </el-select>
 
         <!-- <el-button circle style="margin-left: 5px;" @click="showAdditionalFields"><i v-show="showAdditionalFieldsFlag" class="el-icon-arrow-up"></i><i v-show="!showAdditionalFieldsFlag" class="el-icon-arrow-down"></i></el-button> -->
-        <el-button style="margin-left: 10px;" @click="handleSearch">搜索</el-button>  
+        <el-button style="margin-left: 10px;" @click="handleSearch">{{ $t('common.search') }}</el-button>  
       </div>
     <el-divider></el-divider>
     
@@ -30,29 +30,29 @@
         v-loading="loading"
         stripe
       >
-        <el-table-column prop="countryId" label="ID" width="60" sortable fixed="left">
+        <el-table-column prop="countryId" :label="$t('form.id')" width="60" sortable fixed="left">
         </el-table-column>
-        <el-table-column prop="name" label="国家或地区" width="180" sortable align="center">
+        <el-table-column prop="name" :label="$t('form.name')" width="180" sortable align="center">
         </el-table-column>
-        <el-table-column prop="phone" label="手机区号" width="100" sortable align="center">
+        <el-table-column prop="phone" :label="$t('form.phoneCode')" width="100" sortable align="center">
         </el-table-column>
-        <el-table-column prop="createTime" label="创建日期" width="200" sortable>
+        <el-table-column prop="createTime" :label="$t('form.createTime')" width="200" sortable>
         </el-table-column>
-        <el-table-column prop="updateTime" label="修改日期" width="200" sortable>
+        <el-table-column prop="updateTime" :label="$t('form.updateTime')" width="200" sortable>
         </el-table-column>
-        <el-table-column prop="status" label="状态" width="80" fixed="right" align="center">
+        <el-table-column prop="status" :label="$t('form.status')" width="80" fixed="right" align="center">
           <template slot-scope="scope">
             <el-tag type="success" v-if="scope.row.status == '启用'"
-              >启用</el-tag
+              >{{ $t('option.enable') }}</el-tag
             >
             <el-tag type="danger" v-if="scope.row.status == '禁用'"
-              >禁用</el-tag
+              >{{ $t('option.disable') }}</el-tag
             >
           </template>
         </el-table-column>
         <el-table-column label="操作" width="260" fixed="right">
           <template slot="header">
-            <el-button @click="handleAdd">新增</el-button>
+            <el-button @click="handleAdd">{{ $t('formOperation.add') }}</el-button>
           </template>
           <template slot-scope="scope">
             <el-button
@@ -61,7 +61,7 @@
               size="mini"
               icon="el-icon-circle-close"
               @click="handleStatus(scope.row, 1)"
-              >禁用</el-button
+              >{{ $t('option.disable') }}</el-button
             >
             <el-button
               v-show="scope.row.status == '禁用'"
@@ -70,20 +70,20 @@
               size="mini"
               icon="el-icon-circle-check"
               @click="handleStatus(scope.row, 0)"
-              >启用</el-button
+              >{{ $t('option.enable') }}</el-button
             >
             <el-button
               size="mini"
               icon="el-icon-edit"
               @click="handleUpdate(scope.row)"
-              >修改</el-button
+              >{{ $t('option.edit') }}</el-button
             >
             <el-button
               type="danger"
               size="mini"
               icon="el-icon-delete"
               @click="handleDelete(scope.row)"
-              >删除</el-button
+              >{{ $t('option.delete') }}</el-button
             >
           </template>
         </el-table-column>
@@ -112,26 +112,26 @@
       append-to-body
     >
       <el-form ref="formRef" status-icon :model="form" :rules="rules" label-width="100px" class="drawer-form">
-        <el-form-item label="国家或地区" prop="name">
-          <el-input v-model="form.name" placeholder="请输入国家或地区名" />
+        <el-form-item :label="$t('form.name')" prop="name">
+          <el-input v-model="form.name" :placeholder="$t('placeholder.name')" />
         </el-form-item>
         
-        <el-form-item label="手机区号" prop="phone">
-          <el-input v-model="form.phone" placeholder="请输入手机区号" />
+        <el-form-item :label="$t('form.phoneCode')" prop="phone">
+          <el-input v-model="form.phone" :placeholder="$t('placeholder.phoneCode')" />
         </el-form-item>
         
-        <el-form-item label="状态" prop="status">
-          <el-select v-model="form.status" placeholder="请选择状态">
-            <el-option label="启用" value="0"></el-option>
-            <el-option label="禁用" value="1"></el-option>
+        <el-form-item :label="$t('form.status')" prop="status">
+          <el-select v-model="form.status" :placeholder="$t('placeholder.status')">
+            <el-option :label="$t('option.enable')" value="0"></el-option>
+            <el-option :label="$t('option.disable')" value="1"></el-option>
           </el-select>
         </el-form-item>
 
       </el-form>
       <div class="demo-drawer__footer" style="display: flex; justify-content: space-around;">
-        <el-button type="primary" @click="submitForm">确 定</el-button>
-        <el-button type="info" @click="resetForm">重 置</el-button>
-        <el-button @click="cancel">取 消</el-button>
+        <el-button type="primary" @click="submitForm">{{ $t('drawOperation.submit') }}</el-button>
+        <el-button type="info" @click="resetForm">{{ $t('drawOperation.reset') }}</el-button>
+        <el-button @click="cancel">{{ $t('drawOperation.cancel') }}</el-button>
       </div>
     </el-drawer>
   </div>
@@ -165,11 +165,12 @@ export default {
       // 表单规则
       rules :{
         name: [
-          {required: true, message: '请输入国家或地区名', trigger: 'blur'}
+          {required: true, message: this.$t('errorMessage.name'), trigger: 'blur'},
+          { pattern: /^[\u4e00-\u9fff\u3040-\u30ff\uac00-\ud7afA-Za-z0-9\s]+$/, message: '仅允许汉字、字母、数字、日文和韩文', trigger: 'blur' }
         ],
         phone: [
-          {required: true, message: '请输入手机区号', trigger: 'blur'},
-          { pattern: /^[0-9]+$/, message: '仅允许输入数字', trigger: 'blur' }
+          {required: true, message: this.$t('errorMessage.phoneCode'), trigger: 'blur'},
+          { pattern: /^[0-9]+$/, message: this.$t('errorMessage.phoneCodeLimit'), trigger: 'blur' }
         ]
       }
     };
@@ -233,14 +234,14 @@ export default {
         this.form = res.data.data;
         // console.log(this.form)
         // 显示右侧抽屉
-        this.dialogTitle = "修改国家或地区信息";
+        this.dialogTitle = this.$t('formTitle.updateCountry');
         this.openDialog = true;
       });
     },
     // 新增按钮操作
     handleAdd(){
       this.reset();
-      this.dialogTitle = "新增国家或地区";
+      this.dialogTitle = this.$t('formTitle.addCountry');
       this.openDialog = true
     },
     // 删除按钮操作
@@ -249,7 +250,7 @@ export default {
       delCountry(countryId).then(() => {
         // 成功提醒弹窗
         this.$message({
-          message: '删除成功',
+          message: this.$t('successMessage.delete'),
           type: 'success'
         });
       }).catch(() => {
@@ -265,7 +266,7 @@ export default {
             updateCountry(this.form.countryId, this.form).then(() => {
             // 成功提醒弹窗
             this.$message({
-            message: '修改成功',
+            message: this.$t('successMessage.update'),
             type: 'success'
           });
           // 关闭弹窗
@@ -276,7 +277,7 @@ export default {
         addCountry(this.form).then(() => {
           // 成功提醒弹窗
           this.$message({
-          message: '新增成功',
+          message: this.$t('successMessage.add'),
           type: 'success'
           });
           // 关闭弹窗
@@ -286,7 +287,7 @@ export default {
       }
         }else{
           this.$message({
-          message: '请检查必填项',
+          message: this.$t('errorMessage.validate'),
           type: 'warning'
         });
         }
@@ -299,7 +300,7 @@ export default {
       updateCountry(row.countryId, this.form).then(() => {
         // 成功提醒弹窗
         this.$message({
-            message: '修改成功',
+            message: this.$t('successMessage.update'),
             type: 'success'
           });
         // 重新获取列表

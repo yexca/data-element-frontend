@@ -3,15 +3,15 @@
     <!-- header -->
     <!-- <div class="content-header" style="display: flex; "> -->
       <div class="content-header-search" style="display: flex; align-items: center;">
-        <span style="margin-left: 10px;">用户名：</span>
-        <el-input v-model="queryParams.username" placeholder="请输入用户名" clearable style="width: 200px;"></el-input>
-        <span style="margin-left: 10px">手机号：</span>
-        <el-input placeholder="请输入手机号" v-model="queryParams.phone" clearable style="width: 200px"></el-input>
-        <span style="margin-left: 10px">身份证号：</span>
-        <el-input placeholder="请输入身份证号" v-model="queryParams.nin" clearable style="width: 200px"></el-input>
+        <span style="margin-left: 10px;">{{ $t('form.username') }}：</span>
+        <el-input v-model="queryParams.username" :placeholder="$t('placeholder.username')" clearable style="width: 200px;"></el-input>
+        <span style="margin-left: 10px">{{ $t('form.phone') }}：</span>
+        <el-input :placeholder="$t('placeholder.phone')" v-model="queryParams.phone" clearable style="width: 200px"></el-input>
+        <span style="margin-left: 10px">{{ $t('form.nin') }}：</span>
+        <el-input :placeholder="$t('placeholder.nin')" v-model="queryParams.nin" clearable style="width: 200px"></el-input>
         
         <el-button circle style="margin-left: 5px;" @click="showAdditionalFields"><i v-show="showAdditionalFieldsFlag" class="el-icon-arrow-up"></i><i v-show="!showAdditionalFieldsFlag" class="el-icon-arrow-down"></i></el-button>
-        <el-button style="margin-left: 10px;" @click="handleSearch">搜索</el-button>  
+        <el-button style="margin-left: 10px;" @click="handleSearch">{{ $t('common.search') }}</el-button>  
       </div>
       <!-- <div class="content-header-button" style="margin-right: 10px">
         <el-button @click="handleAdd">新增</el-button>
@@ -21,15 +21,15 @@
     <!-- 额外的输入框，默认不显示 -->
     <div v-show="showAdditionalFieldsFlag">
     <div style="display: flex; align-items: center; margin-top: 10px;">
-      <span style="margin-left: 10px;">ID：</span>
-      <el-input v-model="queryParams.userId" placeholder="请输入ID" clearable style="width: 11%;"></el-input>
-      <span style="margin-left: 10px;">昵称：</span>
-      <el-input v-model="queryParams.nickname" placeholder="请输入昵称" clearable style="width: 11%;"></el-input>
-      <span style="margin-left: 10px;">邮箱：</span>
-      <el-input v-model="queryParams.email" placeholder="请输入邮箱" clearable style="width: 11%;"></el-input>
-      <span style="margin-left: 10px;">国家或地区：</span>
+      <span style="margin-left: 10px;">{{ $t('form.id') }}：</span>
+      <el-input v-model="queryParams.userId" :placeholder="$t('placeholder.id')" clearable style="width: 11%;"></el-input>
+      <span style="margin-left: 10px;">{{ $t('form.nickname') }}：</span>
+      <el-input v-model="queryParams.nickname" :placeholder="$t('placeholder.nickname')" clearable style="width: 11%;"></el-input>
+      <span style="margin-left: 10px;">{{ $t('form.email') }}：</span>
+      <el-input v-model="queryParams.email" :placeholder="$t('placeholder.email')" clearable style="width: 11%;"></el-input>
+      <span style="margin-left: 10px;">{{ $t('form.country') }}：</span>
       <!-- <el-input v-model="queryParams.countryId" placeholder="请输入国家" clearable style="width: 11%;"></el-input> -->
-      <el-select v-model="queryParams.countryId" placeholder="请选择国家或地区" clearable filterable style="width: 11%;">
+      <el-select v-model="queryParams.countryId" :placeholder="$t('placeholder.country')" clearable filterable style="width: 11%;">
         <el-option
           v-for="country in countries"
           :key="country.countryId"
@@ -37,18 +37,18 @@
           :value="country.countryId">
         </el-option>
       </el-select>
-      <span style="margin-left: 10px;">性别：</span>
+      <span style="margin-left: 10px;">{{ $t('form.gender') }}：</span>
       <!-- <el-input v-model="queryParams.gender" placeholder="请输入性别" clearable style="width: 11%;"></el-input> -->
-      <el-select v-model="queryParams.gender" placeholder="请选择性别" clearable style="width: 11%;">
-        <el-option label="男" value="1"></el-option>
-        <el-option label="女" value="2"></el-option>
-        <el-option label="未知" value="0"></el-option>
+      <el-select v-model="queryParams.gender" :placeholder="$t('placeholder.gender')" clearable style="width: 11%;">
+        <el-option :label="$t('option.male')" value="1"></el-option>
+        <el-option :label="$t('option.female')" value="2"></el-option>
+        <el-option :label="$t('option.unknow')" value="0"></el-option>
       </el-select>
-      <span style="margin-left: 10px;">状态：</span>
+      <span style="margin-left: 10px;">{{ $t('form.status') }}：</span>
       <!-- <el-input v-model="queryParams.status" placeholder="请输入状态" clearable style="width: 11%;"></el-input> -->
-      <el-select v-model="queryParams.status" placeholder="请选择状态" clearable style="width: 11%;">
-        <el-option label="启用" value="0"></el-option>
-        <el-option label="禁用" value="1"></el-option>
+      <el-select v-model="queryParams.status" :placeholder="$t('placeholder.status')" clearable style="width: 11%;">
+        <el-option :label="$t('option.enable')" value="0"></el-option>
+        <el-option :label="$t('option.disable')" value="1"></el-option>
       </el-select>
     </div></div>
     <el-divider></el-divider>
@@ -61,35 +61,35 @@
         v-loading="loading"
         stripe
       >
-        <el-table-column prop="userId" label="ID" width="60" sortable fixed="left">
+        <el-table-column prop="userId" :label="$t('form.id')" width="60" sortable fixed="left">
         </el-table-column>
-        <el-table-column prop="username" label="用户名" width="120" sortable>
+        <el-table-column prop="username" :label="$t('form.username')" width="120" sortable>
         </el-table-column>
-        <el-table-column prop="nickname" label="昵称" width="100" sortable>
+        <el-table-column prop="nickname" :label="$t('form.nickname')" width="120" sortable>
         </el-table-column>
-        <el-table-column prop="gender" label="性别" width="50" align="center">
+        <el-table-column prop="gender" :label="$t('form.gender')" width="70" align="center">
         </el-table-column>
-        <el-table-column prop="countryName" label="国家或地区" width="100" align="center">
+        <el-table-column prop="countryName" :label="$t('form.country')" width="100" align="center">
         </el-table-column>
-        <el-table-column prop="nin" label="身份证" width="170">
+        <el-table-column prop="nin" :label="$t('form.nin')" width="170">
         </el-table-column>
-        <el-table-column prop="email" label="邮箱" width="170">
+        <el-table-column prop="email" :label="$t('form.email')" width="170">
         </el-table-column>
-        <el-table-column prop="phone" label="手机号" width="120">
+        <el-table-column prop="phone" :label="$t('form.phone')" width="120">
         </el-table-column>
-        <el-table-column prop="status" label="状态" width="80" fixed="right" align="center">
+        <el-table-column prop="status" :label="$t('form.status')" width="80" fixed="right" align="center">
           <template slot-scope="scope">
             <el-tag type="success" v-if="scope.row.status == '启用'"
-              >启用</el-tag
+              >{{ $t('option.enable') }}</el-tag
             >
             <el-tag type="danger" v-if="scope.row.status == '禁用'"
-              >禁用</el-tag
+              >{{ $t('option.disable') }}</el-tag
             >
           </template>
         </el-table-column>
-        <el-table-column label="操作" width="260" fixed="right">
+        <el-table-column label="操作" width="290" fixed="right">
           <template slot="header">
-            <el-button @click="handleAdd">新增</el-button>
+            <el-button @click="handleAdd">{{ $t('formOperation.add') }}</el-button>
           </template>
           <template slot-scope="scope">
             <el-button
@@ -98,7 +98,7 @@
               size="mini"
               icon="el-icon-circle-close"
               @click="handleStatus(scope.row, 1)"
-              >禁用</el-button
+              >{{ $t('option.disable') }}</el-button
             >
             <el-button
               v-show="scope.row.status == '禁用'"
@@ -107,7 +107,7 @@
               size="mini"
               icon="el-icon-circle-check"
               @click="handleStatus(scope.row, 0)"
-              >启用</el-button
+              >{{ $t('option.enable') }}</el-button
             >
             <el-button
               size="mini"
@@ -154,39 +154,34 @@
       append-to-body
     >
       <el-form ref="form" :model="form" :rules="rules" label-width="100px" class="drawer-form">
-        <el-form-item label="用户名" prop="username">
-          <el-input v-model="form.username" placeholder="请输入用户名" />
+        <el-form-item :label="$t('form.username')" prop="username">
+          <el-input v-model="form.username" :placeholder="$t('placeholder.username')" />
         </el-form-item>
-        <el-form-item label="密码" prop="password">
-          <el-input
-            v-model="form.password"
-            type="password"
-            show-password
-            placeholder="请输入密码"
-          />
+        <el-form-item :label="$t('form.password')" prop="password">
+          <el-input v-model="form.password" type="password" show-password :placeholder="$t('placeholder.password')" />
         </el-form-item>
-        <el-form-item label="确认密码" prop="checkPassword">
-          <el-input v-model="form.checkPassword" placeholder="请再次输入密码"></el-input>
+        <el-form-item :label="$t('form.checkPassword')" prop="checkPassword">
+          <el-input v-model="form.checkPassword" :placeholder="$t('placeholder.checkPassword')"></el-input>
         </el-form-item>
-        <el-form-item label="昵称" prop="nickname">
-          <el-input v-model="form.nickname" placeholder="请输入昵称，默认用户名" />
+        <el-form-item :label="$t('form.nickname')" prop="nickname">
+          <el-input v-model="form.nickname" :placeholder="$t('placeholder.nickname')" />
         </el-form-item>
-        <el-form-item label="电子邮箱" prop="email">
-          <el-input v-model="form.email" placeholder="请输入电子邮箱" />
+        <el-form-item :label="$t('form.email')" prop="email">
+          <el-input v-model="form.email" :placeholder="$t('placeholder.email')" />
         </el-form-item>
-        <el-form-item label="手机号" prop="phone">
-          <el-input v-model.number="form.phone" placeholder="请输入手机号" />
+        <el-form-item :label="$t('form.phone')" prop="phone">
+          <el-input v-model.number="form.phone" :placeholder="$t('placeholder.phone')" />
         </el-form-item>
-        <el-form-item label="性别" prop="gender">
+        <el-form-item :label="$t('form.gender')" prop="gender">
           <el-radio-group v-model="form.gender">
-            <el-radio :label="1">男</el-radio>
-            <el-radio :label="2">女</el-radio>
+            <el-radio :label="1">{{ $t('option.male') }}</el-radio>
+            <el-radio :label="2">{{ $t('option.female') }}</el-radio>
           </el-radio-group>
         </el-form-item>
 
         <!-- 国家或地区选择 -->
-        <el-form-item label="国家或地区" prop="countryId">
-          <el-select v-model="form.countryId" filterable clearable placeholder="请选择国家或地区">
+        <el-form-item :label="$t('form.country')" prop="countryId">
+          <el-select v-model="form.countryId" filterable clearable :placeholder="$t('placeholder.country')">
             <el-option
               v-for="country in countries"
               :key="country.countryId"
@@ -196,15 +191,15 @@
           </el-select>
         </el-form-item>
 
-        <el-form-item label="身份证号" prop="nin">
-          <el-input v-model="form.nin" placeholder="请输入国家身份证号" />
+        <el-form-item :label="$t('form.nin')" prop="nin">
+          <el-input v-model="form.nin" :placeholder="$t('placeholder.nin')" />
         </el-form-item>
 
       </el-form>
       <div class="demo-drawer__footer" style="display: flex; justify-content: space-around;">
-        <el-button type="primary" @click="submitForm">确 定</el-button>
-        <el-button type="info" @click="resetForm">重 置</el-button>
-        <el-button @click="cancel">取 消</el-button>
+        <el-button type="primary" @click="submitForm">{{ $t('drawOperation.submit') }}</el-button>
+        <el-button type="info" @click="resetForm">{{ $t('drawOperation.reset') }}</el-button>
+        <el-button @click="cancel">{{ $t('drawOperation.cancel') }}</el-button>
       </div>
     </el-drawer>
   </div>
@@ -218,7 +213,7 @@ export default {
     // 密码确认--开始
     var validatePass = (rules, value, callback) => {
         if (value === '') {
-          callback(new Error('请输入密码'));
+          callback(new Error(this.$t('placeholder.password')));
         } else {
           if (this.form.checkPassword !== '') {
             this.$refs.form.validateField('checkPassword');
@@ -228,9 +223,9 @@ export default {
       };
       var validatePass2 = (rules, value, callback) => {
         if (value === '') {
-          callback(new Error('请再次输入密码'));
+          callback(new Error(this.$t('placeholder.checkPassword')));
         } else if (value !== this.form.password) {
-          callback(new Error('两次输入密码不一致!'));
+          callback(new Error(this.$t('errorMessage.checkPassword')));
         } else {
           callback();
         }
@@ -268,35 +263,35 @@ export default {
       // 表单规则
       rules :{
         username: [
-          {required: true, message: '请输入用户名', trigger: 'blur'}, // 触发方式为失去焦点
-          {pattern: /^[A-Za-z0-9]+$/, message: '用户名只能使用字母和数字', trigger: 'blur'},
-          {min: 5, message: '用户名至少五个字符', trigger: 'blur'}
+          {required: true, message: this.$t('errorMessage.username'), trigger: 'blur'}, // 触发方式为失去焦点
+          {pattern: /^[A-Za-z0-9]+$/, message: this.$t('errorMessage.usernameLimit'), trigger: 'blur'},
+          {min: 5, message: this.$t('errorMessage.usernameLong'), trigger: 'blur'}
         ],
         password: [
           { validator: validatePass, trigger: 'blur' },
-          {pattern: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/, message: '密码至少包含字母和数字且最低八位', trigger: 'blur'}
+          {pattern: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/, message: this.$t('errorMessage.password'), trigger: 'blur'}
         ],
         checkPassword: [
           { validator: validatePass2, trigger: 'blur' }
         ],
         nickname: [
-          { pattern: /^[\u4e00-\u9fff\u3040-\u30ff\uac00-\ud7afA-Za-z0-9\s]+$/, message: '仅允许汉字、字母、数字、日文和韩文', trigger: 'blur'}
+          { pattern: /^[\u4e00-\u9fff\u3040-\u30ff\uac00-\ud7afA-Za-z0-9\s]+$/, message: this.$t('errorMessage.nickname'), trigger: 'blur'}
         ],
         email: [
-          {pattern: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/, message: '请输入正确的邮箱格式', trigger: 'blur'}
+          {pattern: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/, message: this.$t('errorMessage.emailFormat'), trigger: 'blur'}
         ],
         phone: [
-          { pattern: /^\d{6,11}$/, message: '手机号必须为数字且为 6-11 位数字', trigger: 'blur'}
+          { pattern: /^\d{6,11}$/, message: this.$t('errorMessage.phone'), trigger: 'blur'}
         ],
         gender: [
-          {required: true, message: '请选择性别', trigger: 'change'}
+          {required: true, message: this.$t('errorMessage.gender'), trigger: 'change'}
         ],
         countryId: [
-          {required: true, message: '请选择国家或地区', trigger: 'change'}
+          {required: true, message: this.$t('errorMessage.country'), trigger: 'change'}
         ],
         nin: [
-          {required: true, message: '请输入身份证号', trigger: 'blur'},
-          {min: 6, message: '身份证号最短6个字符'}
+          {required: true, message: this.$t('errorMessage.nin'), trigger: 'blur'},
+          {min: 6, message: this.$t('errorMessage.ninLong')}
         ]
       }
     };
@@ -383,14 +378,14 @@ export default {
         this.form = res.data.data;
         // console.log(this.form)
         // 显示右侧抽屉
-        this.dialogTitle = "修改个人用户信息";
+        this.dialogTitle = this.$t('formTitle.updatePersonaluser');
         this.openDialog = true;
       });
     },
     // 新增按钮操作
     handleAdd(){
       this.reset();
-      this.dialogTitle = "新增个人用户";
+      this.dialogTitle = this.$t('formTitle.addPersonaluser');
       this.openDialog = true
     },
     // 删除按钮操作
@@ -399,7 +394,7 @@ export default {
       delPersonalUser(userId).then(() => {
         // 成功提醒弹窗
         this.$message({
-          message: '删除成功',
+          message: this.$t('successMessage.delete'),
           type: 'success'
         });
       });
@@ -413,7 +408,7 @@ export default {
             updatePersonalUser(this.form.userId, this.form).then(() => {
             // 成功提醒弹窗
             this.$message({
-            message: '修改成功',
+            message: this.$t('successMessage.update'),
             type: 'success'
           });
           // 关闭弹窗
@@ -424,7 +419,7 @@ export default {
         addPersonalUser(this.form).then(() => {
           // 成功提醒弹窗
           this.$message({
-          message: '新增成功',
+          message: this.$t('successMessage.add'),
           type: 'success'
           });
           // 关闭弹窗
@@ -434,7 +429,7 @@ export default {
       }
         }else{
           this.$message({
-          message: '请检查必填项',
+          message: this.$t('errorMessage.validate'),
           type: 'warning'
         });
         }
@@ -447,7 +442,7 @@ export default {
       updatePersonalUser(row.userId, this.form).then(() => {
         // 成功提醒弹窗
         this.$message({
-            message: '修改成功',
+            message: this.$t('successMessage.update'),
             type: 'success'
           });
         // 重新获取列表
