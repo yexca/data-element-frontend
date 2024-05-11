@@ -615,6 +615,8 @@
             message: this.$t('successMessage.delete'),
             type: "success",
           });
+          // 刷新
+          this.fetchList();
         });
       },
       // 弹窗提交按钮
