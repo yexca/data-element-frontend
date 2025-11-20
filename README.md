@@ -2,7 +2,7 @@
 
 # Data Element Market Supply-Side Management System - Frontend
 
-Backend repository: [data-element-backend](https://www.google.com/search?q=https://github.com/yexca/data-element-backend)
+Backend repository: [data-element-backend](https://github.com/yexca/data-element-backend)
 
 ## Overview
 
