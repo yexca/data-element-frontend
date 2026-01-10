@@ -1,5 +1,3 @@
-> 言語: [日本語](README.ja.md)
-
 # Data Element Market Supply-Side Management System - Frontend
 
 Backend repository: [data-element-backend](https://github.com/yexca/data-element-backend)
@@ -22,6 +20,51 @@ A key feature is its multi-language support (Japanese, Chinese, English), implem
       * **Admin Dashboard:** A comprehensive back-office interface for employees/administrators to manage all user information, all data products, category information, and more.
   * **HTTP Client:** Encapsulates Axios, implementing request/response interceptors to handle automatic attachment of JWT tokens and global error handling.
   * **Form Validation:** Implements real-time input validation for registration, login, and data entry forms, integrated with ElementUI's validation rules.
+
+## 📸 UI Preview
+
+Here are some snapshots of the system in action.
+
+### Search Page
+
+| Search Page i18n | Search Page Focus |
+| :---: | :---: |
+| <img src="https://github.com/yexca/picx-images-hosting/raw/master/2026/01-data-element-readme/search-i18n.5c1gsuzj05.webp" width="100%"> | <img src="https://github.com/yexca/picx-images-hosting/raw/master/2026/01-data-element-readme/search-focus.7i0vemrf4x.webp" width="100%"> |
+
+<details>
+<summary>🖱️ Click to view Search Results</summary>
+<img src="https://github.com/yexca/picx-images-hosting/raw/master/2026/01-data-element-readme/search-result.5trihg3jkb.webp" width="100%">
+</details>
+
+### Authentication & User Center
+
+Screens for user registration, login, and profile management.
+
+| User Login | User Registration |
+| :---: | :---: |
+| <img src="https://github.com/yexca/picx-images-hosting/raw/master/2026/01-data-element-readme/user-login.1sfj32416n.webp" width="100%"> | <img src="https://github.com/yexca/picx-images-hosting/raw/master/2026/01-data-element-readme/user-register.7lkhccrheu.webp" width="100%"> |
+
+<details>
+<summary>🖱️ Click to view User Dashboard</summary>
+<img src="https://github.com/yexca/picx-images-hosting/raw/master/2026/01-data-element-readme/user-info.362273f36a.webp" width="100%">
+</details>
+
+### Admin Dashboard
+
+A centralized view for system statistics and management.
+
+![dashboard](https://github.com/yexca/picx-images-hosting/raw/master/2026/01-data-element-readme/dashboard.3uvbr4oc3f.webp)
+
+> Note: Data shown above is for demonstration purposes
+
+#### Dashboard i18n Demo
+
+![Dashboard i18n GIF](https://github.com/yexca/picx-images-hosting/raw/master/2026/01-data-element-readme/dashboard-i18n.1sfj328set.gif)
+
+<details>
+<summary>🖱️ Click to view Employee Login</summary>
+<img src="https://github.com/yexca/picx-images-hosting/raw/master/2026/01-data-element-readme/employee-login.5j4ooawcad.webp" width="100%">
+</details>
 
 ## 🛠 Tech Stack
 
@@ -53,7 +96,7 @@ npm install
 **3. Run the development server (HMR):**
 
 ```bash
-npm run serve
+npm run dev
 ```
 
 **4. Build for production:**

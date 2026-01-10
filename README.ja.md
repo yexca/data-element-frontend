@@ -1,6 +1,6 @@
-> Language: [English](README.md)
-
 # データ要素市場供給側管理システム - フロントエンド
+
+英語のバージョンは最新です：[English](README.md)
 
 **バックエンドのリポジトリはこちら:** [data-element-backend](https://github.com/yexca/data-element-backend)
 
