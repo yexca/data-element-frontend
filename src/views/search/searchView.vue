@@ -195,6 +195,7 @@ export default {
         if (response.data.code === 1) {
           this.searchResults = response.data.data.records.filter(item => item.status !== 2);
           this.totalResults = response.data.data.total;
+          console.log(this.searchResults);
           this.searchPerformed = true;
         } else {
           alert(response.data.msg || this.$t('errorMessage.search'));
@@ -212,7 +213,11 @@ export default {
       this.$refs.searchInput.blur();
     },
     highlightText(text) {
-      return text.replace(/<em>(.*?)<\/em>/g, '<span class="highlight" style="background-color: #ff0; color: black;">$1</span>');
+      if (text == null) {
+        return "没有介绍"
+      } else{
+        return text.replace(/<em>(.*?)<\/em>/g, '<span class="highlight" style="background-color: #ff0; color: black;">$1</span>');
+      }
     },
     selectItem(item) {
       // const routePath = item.type === 1 ? '/data/personal' : '/data/enterprise';

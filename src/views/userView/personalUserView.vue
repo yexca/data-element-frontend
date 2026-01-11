@@ -31,7 +31,7 @@
         <el-col :span="8"><strong>{{ $t('userView.status') }}</strong> {{ userInfo.status == '启用' ? $t('option.enable') : $t('option.disable') }}</el-col>
       </el-row>
 
-      <el-divider content-position="right">{{ $t('userView.concatInfo') }}</el-divider>
+      <el-divider content-position="right">{{ $t('userView.contactInfo') }}</el-divider>
       <el-row :gutter="20">
         <el-col :span="12"
           ><strong>{{ $t('userView.phone') }}</strong> {{ userInfo.phone || $t('userView.noInfo') }}</el-col
@@ -602,7 +602,7 @@ export default {
     // 新增按钮操作
     handleAdd() {
       this.reset();
-      this.drawerTitle = this.$t('errorMessage.addPersonalData');
+      this.drawerTitle = this.$t('formTitle.addPersonalData');
       this.openDrawer = true;
     },
     // 删除按钮操作

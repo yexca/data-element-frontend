@@ -3,14 +3,14 @@ export default {
     menu: {
         dashboard: 'Dashboard',
         employeeCenter: 'Personal Center',
-        employeeManage: 'Employee Manage',
+        employeeManage: 'Employee Mgmt',
         customManage: 'Customer Manag',
         personalManage: 'Person',
         enterpriseManage: 'Enterprise',
-        dataManage: 'Data Manage',
+        dataManage: 'Data Mgmt',
         personalDataManage: 'Personal Data',
         enterpriseDataManage: 'Enterprise Data',
-        infoManage: 'Information Manage',
+        infoManage: 'Information Mgmt',
         countryInfoManage: 'Countries or Regions',
         categoryInfoManage: 'Category Information'
     },
