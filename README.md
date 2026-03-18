@@ -1,6 +1,7 @@
 # Data Element Market Supply-Side Management System - Frontend
 
-Backend repository: [data-element-backend](https://github.com/yexca/data-element-backend)
+Backend: [yexca/data-element-backend](https://github.com/yexca/data-element-backend)  
+Deploy(Docker): [yexca/data-element-docker](https://github.com/yexca/data-element-docker)
 
 ## Overview
 
@@ -79,6 +80,14 @@ A centralized view for system statistics and management.
 | **Build / Deployment** | Node.js, Nginx (via Docker) |
 
 ## Getting Started
+
+### 🐳 Quick Deployment
+
+If you just want to deploy and run the system, please visit the deployment repository for Docker Compose instructions: [yexca/data-element-docker](https://github.com/yexca/data-element-docker)
+
+### 💻 Local Development
+
+To run or modify the frontend locally:
 
 **1. Clone the repository:**
 
